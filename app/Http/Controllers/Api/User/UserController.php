@@ -61,9 +61,12 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        // dd('asd');
+        $user = $this->userService->updateUser($id, $request->all());
+
+        return ResponseHelper::success($user, 'User updated successfully');
     }
 
     /**
@@ -72,5 +75,19 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    public function updateStatus(Request $request, $id)
+    {
+        // Validate the request
+        $request->validate([
+            'status_id' => 'required|integer|exists:statuses,id',
+        ]);
+
+        // Update the user status
+        $user = $this->userService->updateUserStatus($id, $request->status_id);
+
+        return ResponseHelper::success($user, 'User status updated successfully');
     }
 }

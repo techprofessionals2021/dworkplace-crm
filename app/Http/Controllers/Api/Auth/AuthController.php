@@ -46,7 +46,7 @@ class AuthController extends Controller
 
         return ResponseHelper::success([
             'bearer_token' => $loginData['token'],
-            'user' => $loginData['user'], // Include user details in the response
+            'user' => $loginData['user'],
         ], 'Login successful');
     }
 

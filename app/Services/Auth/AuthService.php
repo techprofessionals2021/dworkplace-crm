@@ -19,23 +19,41 @@ class AuthService
             'status_id' => 1, // Assuming a default status
         ]);
 
+        if (isset($data['role_ids']) && is_array($data['role_ids'])) {
+            $user->roles()->attach($data['role_ids']);
+        }
+
+        if (isset($data['department_ids']) && is_array($data['department_ids'])) {
+            $user->departments()->attach($data['department_ids']);
+        }
+
         return $user;
     }
 
     public function login($credentials)
     {
-        $user = User::where('email', $credentials['email'])->first();
+        $user = User::where('email', $credentials['email'])->with(['roles', 'permissions'])->first();
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return null;
         }
-
+    
         $token = $user->createToken('auth_token')->plainTextToken;
-
+    
+        $roles = $user->roles->pluck('name'); 
+        $permissions = $user->permissions->pluck('name');
+    
         return [
             'token' => $token,
-            'user' => $user,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'roles' => $roles,
+                'permissions' => $permissions,
+            ],
         ];
+    
 
      }
 

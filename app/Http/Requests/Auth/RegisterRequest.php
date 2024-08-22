@@ -25,8 +25,13 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|',
-            'contact' => 'required|string|max:20',
+            'contact' => 'required|string|max:255',
+            'password' => 'required|string|min:8',
+            'role_ids' => 'sometimes|array',
+            'role_ids.*' => 'exists:roles,id', // Ensure each role ID exists
+            'department_ids' => 'sometimes|array',
+            'department_ids.*' => 'exists:departments,id', // Ensure each department ID exists
+
         ];
     }
 }

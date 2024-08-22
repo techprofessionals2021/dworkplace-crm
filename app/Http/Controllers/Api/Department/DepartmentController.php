@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Department;
 use App\Helpers\Response\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Department\StoreRequest;
+use App\Http\Resources\Department\DepartmentResource;
 use App\Services\Department\DepartmentService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,6 +25,7 @@ class DepartmentController extends Controller
     public function index()
     {
         $departments = $this->departmentService->getAllDepartments();
+        $departments = DepartmentResource::collection($departments);
         return ResponseHelper::success($departments, Response::HTTP_OK);
     }
 
@@ -79,6 +81,6 @@ class DepartmentController extends Controller
             return ResponseHelper::error('Department not found', Response::HTTP_NOT_FOUND);
         }
 
-        return ResponseHelper::success(null, Response::HTTP_NO_CONTENT);
+        return ResponseHelper::success(null, "Department deleted successfully",Response::HTTP_NO_CONTENT);
     }
 }

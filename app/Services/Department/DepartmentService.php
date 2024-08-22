@@ -2,7 +2,7 @@
 
 namespace App\Services\Department;
 
-use App\Models\Department;
+use App\Models\Department\Department;
 
 class DepartmentService
 {

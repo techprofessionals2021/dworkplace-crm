@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Department;
 
+use App\Models\Department\Relationship\DepartmentRelationship;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-    use HasFactory;
+    use HasFactory, DepartmentRelationship;
 
     protected $fillable = [
         'manager_id',
@@ -18,5 +19,7 @@ class Department extends Model
         'type',
         'is_projectable',
     ];
+
+
 
 }

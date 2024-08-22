@@ -35,7 +35,7 @@ class DepartmentController extends Controller
 
         $validated = $request->validated();
         $department = $this->departmentService->createDepartment($validated);
-        return ResponseHelper::success($department, "Department created successfully",Response::HTTP_CREATED);
+        return ResponseHelper::success($department, "Department created successfully", Response::HTTP_CREATED);
     }
 
     /**
@@ -49,31 +49,23 @@ class DepartmentController extends Controller
             return ResponseHelper::error('Department not found', Response::HTTP_NOT_FOUND);
         }
 
-        return ResponseHelper::success($department, Response::HTTP_OK);
+        return ResponseHelper::success($department, "Department feached successfully", Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreRequest $request, string $id)
     {
-        $validated = $request->validate([
-            'manager_id' => 'nullable|exists:users,id',
-            'parent_department_id' => 'nullable|exists:departments,id',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status_id' => 'required|exists:statuses,id',
-            'type' => 'required|in:department,team',
-            'is_projectable' => 'required|boolean',
-        ]);
 
+        $validated = $request->validated();
         $department = $this->departmentService->updateDepartment($id, $validated);
 
         if (!$department) {
             return ResponseHelper::error('Department not found', Response::HTTP_NOT_FOUND);
         }
 
-        return ResponseHelper::success($department, Response::HTTP_OK);
+        return ResponseHelper::success($department, "Department updated successfully", Response::HTTP_OK);
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace App\Services\Permission;
 
 use App\Models\Permission;
-use App\Models\Role;
+use App\Models\Role\Role;
 
 class AssignPermissionService
 {
@@ -19,7 +19,7 @@ class AssignPermissionService
         // Find the role
         $role = Role::findOrFail($roleId);
 
-      
+
         // Sync the permissions to the role
         $role->permissions()->sync($permissionIds);
 
@@ -29,26 +29,18 @@ class AssignPermissionService
 
     public function getRolesWithPermissions()
     {
-        // Fetch all permissions
-        $allPermissions = Permission::all();
-
         // Fetch all roles with their granted permissions
         $roles = Role::with('permissions')->get();
 
-        // Prepare the roles with all permissions (granted and not granted)
-        $rolesWithPermissions = $roles->map(function ($role) use ($allPermissions) {
-            $rolePermissions = $role->permissions->pluck('id')->toArray();
-            $permissions = $allPermissions->mapWithKeys(function ($permission) use ($rolePermissions) {
-                return [
-                    $permission->name => in_array($permission->id, $rolePermissions),
-                ];
-            });
+        // Prepare the roles with their permissions
+        $rolesWithPermissions = $roles->map(function ($role) {
             return [
-                'role' => $role->name,
-                'permissions' => $permissions,
+                'role' => $role->name,  // Return role as an array
+                'permissions' => $role->permissions->pluck('name')->toArray(),  // Return permissions as an array of names
             ];
         });
 
         return $rolesWithPermissions;
+
     }
 }

@@ -32,8 +32,10 @@ class AuthService
 
     public function login($credentials)
     {
-        $user = User::where('email', $credentials['email'])->with(['roles', 'permissions'])->first();
+  
 
+        $user = User::where('email', $credentials['email'])->with(['roles', 'permissions'])->first();
+        // dd('asd');
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return null;
         }

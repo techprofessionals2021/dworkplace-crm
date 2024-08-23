@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\User\AssignPermissionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Department\DepartmentController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\Api\User\RoleController;
 
@@ -30,6 +31,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
      Route::apiResource('permission', AssignPermissionController::class)->only(['index', 'store', 'update']);
 
+    // Route::prefix('role')->group(function () {
+    //     Route::get('/', [RoleController::class, 'index']); // List all roles
+    //     Route::post('/add-role', [RoleController::class, 'store']); // Create a new role
+    //     Route::put('/update/{id}', [RoleController::class, 'update']); // Update a role
+    // });
+
+    Route::apiResource('departments', DepartmentController::class);
 
 });
 

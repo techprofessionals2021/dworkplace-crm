@@ -4,6 +4,7 @@ namespace App\Services\Permission;
 
 use App\Models\Permission;
 use App\Models\Role\Role;
+use App\Models\RolePermissionDepartment\RolePermissionDepartment;
 
 class AssignPermissionService
 {
@@ -29,18 +30,10 @@ class AssignPermissionService
 
     public function getRolesWithPermissions()
     {
-        // Fetch all roles with their granted permissions
-        $roles = Role::with('permissions')->get();
+        $records = RolePermissionDepartment::with(['role', 'permission', 'department'])->get();
 
-        // Prepare the roles with their permissions
-        $rolesWithPermissions = $roles->map(function ($role) {
-            return [
-                'role' => $role->name,  // Return role as an array
-                'permissions' => $role->permissions->pluck('name')->toArray(),  // Return permissions as an array of names
-            ];
-        });
+        return $records;
 
-        return $rolesWithPermissions;
 
     }
 }

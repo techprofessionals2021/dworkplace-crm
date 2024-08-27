@@ -14,7 +14,6 @@ class UserService
      */
     public function getAllUsers()
     {
-
         return User::get();
     }
 

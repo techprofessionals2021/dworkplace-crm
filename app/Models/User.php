@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Department\Department;
 use App\Models\Permission\Permission;
 use App\Models\Role\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -66,7 +68,7 @@ class User extends Authenticatable
 
     public function departments()
     {
-        return $this->belongsToMany(UserDepartment::class, 'user_departments', 'user_id', 'department_id');
+        return $this->belongsToMany(Department::class, 'user_departments', 'department_id', 'user_id');
     }
 
 }

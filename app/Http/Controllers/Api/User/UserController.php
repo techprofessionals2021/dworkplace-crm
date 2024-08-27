@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Helpers\Response\ResponseHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User\UserResource;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 
@@ -21,8 +22,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->userService->getAllUsers();
-
+        $users = UserResource::collection($this->userService->getAllUsers());
         return ResponseHelper::success($users, 'User list retrieved successfully');
     }
 

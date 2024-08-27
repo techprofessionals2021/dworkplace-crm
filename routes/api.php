@@ -22,8 +22,8 @@ use App\Http\Controllers\Api\User\RoleController;
 // Protected routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
     // This route will now be accessible to authenticated users only
-    Route::get('get-all-users', [UserController::class, 'index']);
-    Route::put('update-user/{id}', [UserController::class, 'update']);
+    // Route::get('get-all-users', [UserController::class, 'index']);
+    // Route::put('update-user/{id}', [UserController::class, 'update']);
     Route::put('update-user-status/{id}', [UserController::class, 'updateStatus']);
     
     

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Role\RoleResource;
 use Illuminate\Http\Request;
 use App\Http\Requests\Role\RoleRequest;
-use App\Models\Role;
+use App\Models\Role\Role;
 use App\Helpers\Response\ResponseHelper;
 use App\Services\Role\RoleService;
 
@@ -25,6 +26,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = $this->roleService->getAllRoles();
+        $roles = RoleResource::collection($roles);
         return ResponseHelper::success($roles, 'Roles retrieved successfully');
     }
 

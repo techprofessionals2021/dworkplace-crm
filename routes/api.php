@@ -32,6 +32,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('role', RoleController::class);
     Route::apiResource('permissions', AssignPermissionController::class)->only(['index', 'store', 'update']);
 
+
+     Route::apiResource('role', RoleController::class)->only(['index', 'store', 'update']);
+
+     Route::apiResource('permission', AssignPermissionController::class)->only(['index', 'store', 'update']);
+
     // Route::prefix('role')->group(function () {
     //     Route::get('/', [RoleController::class, 'index']); // List all roles
     //     Route::post('/add-role', [RoleController::class, 'store']); // Create a new role

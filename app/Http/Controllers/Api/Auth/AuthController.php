@@ -30,8 +30,8 @@ class AuthController extends Controller
 
         return ResponseHelper::success([
             'user' => $user,
-            // 'bearer_token' => $token,
-            // 'token_type' => 'Bearer'
+            'bearer_token' => $token,
+            'token_type' => 'Bearer'
         ], 'User created successfully');
     }
 

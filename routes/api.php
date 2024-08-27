@@ -25,11 +25,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('get-all-users', [UserController::class, 'index']);
     Route::put('update-user/{id}', [UserController::class, 'update']);
     Route::put('update-user-status/{id}', [UserController::class, 'updateStatus']);
-
-
-     Route::apiResource('role', RoleController::class)->only(['index', 'store', 'update']);
-
-     Route::apiResource('permission', AssignPermissionController::class)->only(['index', 'store', 'update']);
+    
+    
+    
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('role', RoleController::class);
+    Route::apiResource('permissions', AssignPermissionController::class)->only(['index', 'store', 'update']);
 
     // Route::prefix('role')->group(function () {
     //     Route::get('/', [RoleController::class, 'index']); // List all roles

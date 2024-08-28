@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Department\DepartmentPermissionController;
+use App\Http\Controllers\Api\Status\StatusController;
 use App\Http\Controllers\Api\User\AssignPermissionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +46,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // });
 
     Route::apiResource('departments', DepartmentController::class);
+    Route::apiResource('department-permission', DepartmentPermissionController::class);
+    Route::apiResource('status', StatusController::class);
 
 });
 

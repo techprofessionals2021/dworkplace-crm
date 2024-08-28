@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Models\Department\Department;
 use App\Models\Permission\Permission;
 use App\Models\Role\Role;
+use App\Models\Status\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -69,6 +70,11 @@ class User extends Authenticatable
     public function departments()
     {
         return $this->belongsToMany(Department::class, 'user_departments', 'department_id', 'user_id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
 }

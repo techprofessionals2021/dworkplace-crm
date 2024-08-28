@@ -32,19 +32,19 @@ class AuthService
 
     public function login($credentials)
     {
-  
+
 
         $user = User::where('email', $credentials['email'])->with(['roles', 'permissions'])->first();
         // dd('asd');
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return null;
         }
-    
+
         $token = $user->createToken('auth_token')->plainTextToken;
-    
-        $roles = $user->roles->pluck('name'); 
+
+        $roles = $user->roles->pluck('name');
         $permissions = $user->permissions->pluck('name');
-    
+
         return [
             'token' => $token,
             'user' => [
@@ -55,7 +55,7 @@ class AuthService
                 'permissions' => $permissions,
             ],
         ];
-    
+
 
      }
 

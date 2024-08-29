@@ -15,11 +15,14 @@ class DepartmentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'=> @$this->id,
             'manager' => @$this->manager->name,
             'parent_department' => @$this->parentDepartment->name,
             'name' => @$this->name,
             'description' => @$this->description,
-            // 'status' => $this->status_id,
+            'status' => $this->status_id,
+            'is_projectable'=>$this->is_projectable,
+            'type'=>$this->type
         ];
     }
 }

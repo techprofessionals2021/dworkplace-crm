@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Permission extends Model
 {
+    protected $hidden = ['pivot'];
+
     use HasFactory,PermissionRelationship;
 
 }

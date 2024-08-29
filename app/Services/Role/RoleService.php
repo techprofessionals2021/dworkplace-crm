@@ -27,4 +27,15 @@ class RoleService
         $role->update($data);
         return $role;
     }
+
+    public function getPermissionsByRoleId($roleId)
+    {
+        $role = Role::with('permissions')->find($roleId);
+
+        if (!$role) {
+            return null;
+        }
+
+        return $role;
+    }
 }

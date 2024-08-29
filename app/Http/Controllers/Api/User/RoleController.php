@@ -30,6 +30,19 @@ class RoleController extends Controller
         return ResponseHelper::success($roles, 'Roles retrieved successfully');
     }
 
+
+    public function getPermissions($roleId, RoleService $roleService)
+    {
+        $permissions = $roleService->getPermissionsByRoleId($roleId);
+
+        if (!$permissions) {
+            return ResponseHelper::error('Role not found', 404);
+        }
+
+        return ResponseHelper::success($permissions);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */

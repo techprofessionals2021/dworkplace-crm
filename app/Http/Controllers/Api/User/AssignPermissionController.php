@@ -32,6 +32,15 @@ class AssignPermissionController extends Controller
 
     }
 
+
+    public function all_permissions()
+    {
+        $rolesWithPermissions = $this->assignPermissionService->getAllPermissions();
+
+        return ResponseHelper::success($rolesWithPermissions, 'Permissions retrieved successfully');
+
+    }
+
     /**
      * Show the form for creating a new resource.
      */

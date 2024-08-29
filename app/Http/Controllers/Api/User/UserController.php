@@ -22,6 +22,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
+        dd($user->getDepartmentPermissions());
         $users = UserResource::collection($this->userService->getAllUsers());
         return ResponseHelper::success($users, 'User list retrieved successfully');
     }

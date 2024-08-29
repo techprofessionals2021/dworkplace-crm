@@ -77,4 +77,15 @@ class User extends Authenticatable
         return $this->belongsTo(Status::class, 'status_id');
     }
 
+
+    public function getDepartmentPermissions()
+    {
+        return Permission::join('role_permission_departments', 'permissions.id', '=', 'role_permission_departments.permission_id')
+        ->join('roles', 'role_permission_departments.role_id', '=', 'roles.id')
+        ->whereIn('roles.id', $this->roles->pluck('id'))
+        ->whereIn('role_permission_departments.department_id', $this->departments->pluck('id'))
+        ->select('permissions.*')
+        ->get();
+    }
+
 }

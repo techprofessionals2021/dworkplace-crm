@@ -32,12 +32,12 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::apiResource('users', UserController::class);
     Route::apiResource('role', RoleController::class);
-    Route::apiResource('permissions', AssignPermissionController::class)->only(['index', 'store', 'update']);
+    // Route::apiResource('permissions', AssignPermissionController::class)->only(['index', 'store', 'update']);
 
 
      Route::apiResource('role', RoleController::class)->only(['index', 'store', 'update']);
 
-     Route::get('get-role-permission/{id}', [RoleController::class, 'getPermissions']);
+     Route::get('roles/{role}/permissions', [RoleController::class, 'getPermissions']);
 
 
 

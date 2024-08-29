@@ -26,15 +26,10 @@ class AssignPermissionController extends Controller
      */
     public function index()
     {
-        $rolesWithPermissions = $this->assignPermissionService->getRolesWithPermissions();
+        // $rolesWithPermissions = $this->assignPermissionService->getRolesWithPermissions();
 
-        return ResponseHelper::success($rolesWithPermissions, 'Roles with permissions retrieved successfully');
+        // return ResponseHelper::success($rolesWithPermissions, 'Roles with permissions retrieved successfully');
 
-    }
-
-
-    public function all_permissions()
-    {
         $rolesWithPermissions = $this->assignPermissionService->getAllPermissions();
 
         return ResponseHelper::success($rolesWithPermissions, 'Permissions retrieved successfully');

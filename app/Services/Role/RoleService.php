@@ -30,12 +30,12 @@ class RoleService
 
     public function getPermissionsByRoleId($roleId)
     {
-        $role = Role::with('permissions')->find($roleId);
+        $roleWithPermissions = Role::with('permissions')->find($roleId);
 
-        if (!$role) {
+        if (!$roleWithPermissions) {
             return null;
         }
 
-        return $role;
+        return $roleWithPermissions;
     }
 }

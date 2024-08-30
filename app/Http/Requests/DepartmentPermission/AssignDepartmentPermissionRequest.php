@@ -22,9 +22,10 @@ class AssignDepartmentPermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role_id' => 'required|exists:roles,id',
-            'permission_ids' => 'required|exists:permissions,id',
-            'department_id' => 'required|exists:departments,id',
+            'role_id' => 'required|integer|exists:roles,id',
+            'department_id' => 'required|integer|exists:departments,id',
+            'permission_ids' => 'required|array',
+            'permission_ids.*' => 'integer|exists:permissions,id',
         ];
     }
 }

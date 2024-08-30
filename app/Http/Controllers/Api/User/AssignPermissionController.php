@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Services\Permission\AssignPermissionService;
 use App\Http\Requests\Permission\AssignPermissionRequest;
 use App\Helpers\Response\ResponseHelper;
+use App\Http\Requests\DepartmentPermission\AssignDepartmentPermissionRequest;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class AssignPermissionController extends Controller
 {
@@ -33,7 +36,6 @@ class AssignPermissionController extends Controller
         $rolesWithPermissions = $this->assignPermissionService->getAllPermissions();
 
         return ResponseHelper::success($rolesWithPermissions, 'Permissions retrieved successfully');
-
     }
 
     /**
@@ -95,15 +97,49 @@ class AssignPermissionController extends Controller
 
     /**
      * get role permissions according to department
-    */
-    public function getDepartmentPermissions($department,$role)
+     */
+    public function getDepartmentPermissions($department, $role)
     {
 
-        $roleDepartPermissions = $this->assignPermissionService->getSingleDepartmentPermissions($department,$role);
+        $roleDepartPermissions = $this->assignPermissionService->getSingleDepartmentPermissions($department, $role);
         return ResponseHelper::success([
             'roleDepartPermissions' => $roleDepartPermissions,
         ], 'Permissions Fetched Successfully');
     }
 
+    /**
+     * store role permissions according to department
+     */
+    public function updateDepartmentPermissions(AssignDepartmentPermissionRequest $request)
+    {
+        // Prepare the data for insertion
+        $data = array_map(function ($permission) use ($request) {
+            return [
+                'role_id' => $request->role_id,
+                'permission_id' => $permission,
+                'department_id' => $request->department_id,
+            ];
+        }, $request->permission_ids);
 
+        try {
+            DB::transaction(function () use ($data, $request) {
+                // Delete existing permissions
+                DB::table('role_permission_departments')
+                    ->where('role_id', $request->role_id)
+                    ->where('department_id', $request->department_id)
+                    ->delete();
+
+                // Insert new permissions
+                DB::table('role_permission_departments')->insert($data);
+            });
+
+            return ResponseHelper::success([], 'Permissions Assigned Successfully');
+        } catch (QueryException $e) {
+            // Handle database-specific exceptions
+            return ResponseHelper::error('Database error occurred: ' . $e->getMessage(), 500);
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return ResponseHelper::error('An error occurred: ' . $e->getMessage(), 500);
+        }
+    }
 }

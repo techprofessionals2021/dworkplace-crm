@@ -42,8 +42,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
      Route::apiResource('permission', AssignPermissionController::class)->only(['index', 'store', 'update']);
-     Route::get('department-permissions/{department}/{role}', [AssignPermissionController::class, 'getDepartmentPermissions']);
-     Route::post('department-permissions', [AssignPermissionController::class, 'updateDepartmentPermissions']);
+     Route::get('department-permissions/{department}/{role}', [DepartmentPermissionController::class, 'getDepartmentPermissions']);
+     Route::post('department-permissions', [DepartmentPermissionController::class, 'updateDepartmentPermissions']);
 
     // Route::prefix('role')->group(function () {
     //     Route::get('/', [RoleController::class, 'index']); // List all roles
@@ -52,7 +52,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // });
 
     Route::apiResource('departments', DepartmentController::class);
-    Route::apiResource('department-permission', DepartmentPermissionController::class);
     Route::apiResource('status', StatusController::class);
 
 });

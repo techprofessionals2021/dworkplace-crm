@@ -44,14 +44,5 @@ class AssignPermissionService
         return PermissionResource::collection($records);
     }
 
-    public function getSingleDepartmentPermissions($department_id,$role_id)
-    {
-        
-        return Permission::join('role_permission_departments', 'permissions.id', '=', 'role_permission_departments.permission_id')
-        ->join('roles', 'role_permission_departments.role_id', '=', 'roles.id')
-        ->where('roles.id', $role_id)
-        ->where('role_permission_departments.department_id', $department_id)
-        ->select('permissions.*')
-        ->get();
-    }
+
 }

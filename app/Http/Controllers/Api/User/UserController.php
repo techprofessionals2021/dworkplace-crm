@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Helpers\Response\ResponseHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\User\UserResource;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
@@ -22,8 +23,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        dd($user->getDepartmentPermissions());
         $users = UserResource::collection($this->userService->getAllUsers());
         return ResponseHelper::success($users, 'User list retrieved successfully');
     }
@@ -63,7 +62,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         // dd('asd');
         $user = $this->userService->updateUser($id, $request->all());

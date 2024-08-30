@@ -92,4 +92,18 @@ class AssignPermissionController extends Controller
     {
         //
     }
+
+    /**
+     * get role permissions according to department
+    */
+    public function getDepartmentPermissions($department,$role)
+    {
+
+        $roleDepartPermissions = $this->assignPermissionService->getSingleDepartmentPermissions($department,$role);
+        return ResponseHelper::success([
+            'roleDepartPermissions' => $roleDepartPermissions,
+        ], 'Permissions Fetched Successfully');
+    }
+
+
 }

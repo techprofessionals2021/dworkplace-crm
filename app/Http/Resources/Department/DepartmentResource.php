@@ -20,7 +20,9 @@ class DepartmentResource extends JsonResource
             'manager' => @$this->manager->name,
             'parent_department' => @$this->parentDepartment->name,
             'description' => @$this->description,
-            // 'status' => $this->status_id,
+            'status' => $this->status_id,
+            'is_projectable'=>$this->is_projectable,
+            'type'=>$this->type
         ];
     }
 }

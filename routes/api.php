@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\User\RoleController;
 use App\Http\Controllers\Api\PaymentMethod\PaymentMethodController;
 use App\Http\Controllers\Api\SourceAccount\SourceAccountController;
 
+use App\Http\Controllers\Api\Brand\BrandController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,12 +24,18 @@ use App\Http\Controllers\Api\SourceAccount\SourceAccountController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post('create-user', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
 // Protected routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
     // This route will now be accessible to authenticated users only
-    // Route::get('get-all-users', [UserController::class, 'index']);
-    // Route::put('update-user/{id}', [UserController::class, 'update']);
+    Route::apiResource('brands', BrandController::class);
+    
+    Route::get('get-all-users', [UserController::class, 'index']);
+    Route::put('update-user/{id}', [UserController::class, 'update']);
     Route::put('update-user-status/{id}', [UserController::class, 'updateStatus']);
     
     
@@ -65,11 +72,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
+
+
 });
 
 
 
-Route::post('create-user', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
-Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
-Route::post('reset-password', [AuthController::class, 'resetPassword']); 
+

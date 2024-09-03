@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\Api\User\RoleController;
 use App\Http\Controllers\Api\PaymentMethod\PaymentMethodController;
 use App\Http\Controllers\Api\SourceAccount\SourceAccountController;
+use App\Http\Controllers\Api\Currency\CurrencyController;
 
 use App\Http\Controllers\Api\Brand\BrandController;
 
@@ -33,13 +34,13 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::middleware('auth:sanctum')->group(function () {
     // This route will now be accessible to authenticated users only
     Route::apiResource('brands', BrandController::class);
-    
+
     Route::get('get-all-users', [UserController::class, 'index']);
     Route::put('update-user/{id}', [UserController::class, 'update']);
     Route::put('update-user-status/{id}', [UserController::class, 'updateStatus']);
-    
-    
-    
+
+
+
     Route::apiResource('users', UserController::class);
     Route::apiResource('role', RoleController::class);
     // Route::apiResource('permissions', AssignPermissionController::class)->only(['index', 'store', 'update']);
@@ -68,6 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Payment Methods & Source Account
     Route::apiResource('payment-methods',PaymentMethodController::class);
     Route::apiResource('source-accounts',SourceAccountController::class);
+    Route::apiResource('currency', CurrencyController::class);
 
 
 

@@ -64,7 +64,7 @@ class BrandController extends Controller
         }
         else{
             $brand_resource = new BrandResource($brand);
-            return ResponseHelper::success($brand_resource, "Brand Fetched Successfully", Response::HTTP_OK);
+            return ResponseHelper::success($brand_resource, "Brand Updated Successfully", Response::HTTP_OK);
         }
 
     }

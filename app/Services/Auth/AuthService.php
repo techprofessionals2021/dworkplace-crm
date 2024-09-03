@@ -40,10 +40,13 @@ class AuthService
             return null;
         }
 
+        // dd($user->getDepartmentPermissions()->pluck('name'));
         $token = $user->createToken('auth_token')->plainTextToken;
 
         $roles = $user->roles->pluck('name');
         $permissions = $user->permissions->pluck('name');
+        $departPermissions = $user->getDepartmentPermissions()->pluck('name');
+        $allPermissions =  $permissions->merge($departPermissions);
 
         return [
             'token' => $token,
@@ -52,7 +55,7 @@ class AuthService
                 'name' => $user->name,
                 'email' => $user->email,
                 'roles' => $roles,
-                'permissions' => $permissions,
+                'permissions' => $allPermissions,
             ],
         ];
 

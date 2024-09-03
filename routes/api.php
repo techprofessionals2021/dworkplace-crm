@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Department\DepartmentController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\Api\User\RoleController;
 use App\Http\Controllers\Api\PaymentMethod\PaymentMethodController;
+use App\Http\Controllers\Api\SourceAccount\SourceAccountController;
 
 
 /*
@@ -57,9 +58,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('status', StatusController::class);
 
 
-    // Payment Methods
-
+    // Payment Methods & Source Account
     Route::apiResource('payment-methods',PaymentMethodController::class);
+    Route::apiResource('source-accounts',SourceAccountController::class);
+
 
 
 

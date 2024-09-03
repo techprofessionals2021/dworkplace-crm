@@ -37,12 +37,12 @@ class AuthService
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return null;
         }
-    
+
         $token = $user->createToken('auth_token')->plainTextToken;
-    
-        $roles = $user->roles->pluck('name'); 
+
+        $roles = $user->roles->pluck('name');
         $permissions = $user->permissions->pluck('name');
-    
+
         return [
             'token' => $token,
             'user' => [
@@ -53,7 +53,7 @@ class AuthService
                 'permissions' => $permissions,
             ],
         ];
-    
+
 
      }
 

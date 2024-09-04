@@ -4,5 +4,8 @@ namespace App\Models\Brand\Relationship;
 
 trait BrandRelationship
 {
-    // Define your relationships here
+    public function sourceAccounts()
+    {
+        return $this->hasMany(SourceAccount::class);
+    }
 }

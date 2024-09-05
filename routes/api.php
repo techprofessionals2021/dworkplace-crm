@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\PaymentMethod\PaymentMethodController;
 use App\Http\Controllers\Api\SourceAccount\SourceAccountController;
 use App\Http\Controllers\Api\Currency\CurrencyController;
 use App\Http\Controllers\Api\Client\ClientController;
+use App\Http\Controllers\Api\DirectClient\DirectClientController;
 
 use App\Http\Controllers\Api\Brand\BrandController;
 
@@ -72,6 +73,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('source-accounts',SourceAccountController::class);
     Route::apiResource('currency', CurrencyController::class);
     Route::apiResource('clients', ClientController::class);
+    Route::apiResource('direct-clients', DirectClientController::class);
 
 
 

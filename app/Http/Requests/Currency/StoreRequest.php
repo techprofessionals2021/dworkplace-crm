@@ -24,7 +24,7 @@ class StoreRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'symbol' => 'nullable|string',
-            'conversion_rate' => 'nullable|float'
+            'conversion_rate' => 'nullable'
         ];
     }
 

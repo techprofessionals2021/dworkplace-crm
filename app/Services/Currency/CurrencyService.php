@@ -23,6 +23,7 @@ class CurrencyService
     public function updateCurrencyById($data, $id)
     {
         $currency = $this->getCurrencyById($id);
+
         if(!$currency){
             return null;
         }

@@ -14,6 +14,8 @@ use App\Http\Controllers\Api\SourceAccount\SourceAccountController;
 use App\Http\Controllers\Api\Currency\CurrencyController;
 use App\Http\Controllers\Api\Client\ClientController;
 use App\Http\Controllers\Api\WorkType\WorkTypeController;
+use App\Http\Controllers\Api\DirectClient\DirectClientController;
+
 use App\Http\Controllers\Api\Brand\BrandController;
 
 /*
@@ -70,6 +72,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('clients', ClientController::class);
     Route::apiResource('work-types', WorkTypeController::class);
   
+    Route::apiResource('direct-clients', DirectClientController::class);
+
+
+
+
 
 });
 

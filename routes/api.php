@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Currency\CurrencyController;
 use App\Http\Controllers\Api\Client\ClientController;
 use App\Http\Controllers\Api\WorkType\WorkTypeController;
 use App\Http\Controllers\Api\DirectClient\DirectClientController;
+use App\Http\Controllers\Api\WorkTypeOption\WorkTypeOptionController;
 
 use App\Http\Controllers\Api\Brand\BrandController;
 
@@ -37,7 +38,7 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::middleware('auth:sanctum')->group(function () {
     // This route will now be accessible to authenticated users only
     Route::apiResource('brands', BrandController::class);
-    
+
 
     Route::get('get-all-users', [UserController::class, 'index']);
     Route::put('update-user/{id}', [UserController::class, 'update']);
@@ -71,8 +72,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('currency', CurrencyController::class);
     Route::apiResource('clients', ClientController::class);
     Route::apiResource('work-types', WorkTypeController::class);
-  
+
     Route::apiResource('direct-clients', DirectClientController::class);
+    Route::apiResource('work-type-options', WorkTypeOptionController::class);
 
 
 

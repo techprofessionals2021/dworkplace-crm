@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\DirectClient\DirectClientController;
 use App\Http\Controllers\Api\WorkTypeOption\WorkTypeOptionController;
 
 use App\Http\Controllers\Api\Brand\BrandController;
+use App\Http\Controllers\Api\Project\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('direct-clients', DirectClientController::class);
     Route::apiResource('work-type-options', WorkTypeOptionController::class);
+
+    Route::apiResource('projects', ProjectController::class);
 
 
 

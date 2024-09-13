@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Project\Project;
 use App\Observers\ProjectObserver;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,5 +23,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Project::observe(ProjectObserver::class);
+        
+        Relation::enforceMorphMap([
+            'project' => 'App\Models\Project\Project',
+        ]);
     }
 }

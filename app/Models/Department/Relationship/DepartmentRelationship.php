@@ -27,7 +27,7 @@ trait DepartmentRelationship
 
     public function projects()
     {
-        return $this->morphedByMany(Project::class, 'projectable', 'project_departments', 'department_id', 'projectable_id');
+        return $this->morphedByMany(Project::class, 'departmentables');
     }
     
     /**

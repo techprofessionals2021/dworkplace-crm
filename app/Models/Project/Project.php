@@ -22,6 +22,6 @@ class Project extends Model
 
     public function departments()
     {
-        return $this->morphToMany(Department::class,'projectable', 'project_departments', 'department_id', 'projectable_id');
+        return $this->morphToMany(Department::class,'departmentable');
     }
 }

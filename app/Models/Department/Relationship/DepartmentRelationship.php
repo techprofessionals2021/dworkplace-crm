@@ -3,6 +3,7 @@
 namespace App\Models\Department\Relationship;
 
 use App\Models\Department\Department;
+use App\Models\Project\Project;
 use App\Models\User;
 
 trait DepartmentRelationship
@@ -23,6 +24,12 @@ trait DepartmentRelationship
         return $this->belongsTo(Department::class, 'parent_department_id');
     }
 
+
+    public function projects()
+    {
+        return $this->morphedByMany(Project::class, 'projectable', 'project_departments', 'department_id', 'projectable_id');
+    }
+    
     /**
      * Get the status for the department.
      */

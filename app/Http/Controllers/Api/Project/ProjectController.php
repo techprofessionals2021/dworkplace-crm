@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api\Project;
 
+use App\Helpers\Response\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\project\StoreRequest;
 use App\Services\Project\ProjectService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {
@@ -38,6 +40,10 @@ class ProjectController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        $projectData = $request->validated();
+        $result = $this->projectService->createProject($projectData);
+        
+        return ResponseHelper::success($result, 'Project created successfully!',Response::HTTP_CREATED);
         //
     }
 

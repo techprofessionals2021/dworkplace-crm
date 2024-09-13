@@ -23,9 +23,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Project::observe(ProjectObserver::class);
-        
-        Relation::enforceMorphMap([
-            'project' => 'App\Models\Project\Project',
-        ]);
+
+        // Relation::enforceMorphMap([
+        //     'project' => 'App\Models\Project\Project',
+        // ]);
     }
 }

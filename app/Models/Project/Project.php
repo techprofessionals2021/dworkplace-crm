@@ -2,26 +2,18 @@
 
 namespace App\Models\Project;
 
-use App\Models\Department\Department;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Project\Relationship\ProjectRelationship;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    use HasFactory;
-    
+    use HasFactory, ProjectRelationship;
+
     protected $fillable = [
         'creator_id', 'project_code', 'sales_code', 'title', 'description',
         'client_id', 'source_account_id', 'status_id', 'deadline',
     ];
 
-    public function financialDetails()
-    {
-        return $this->hasOne(ProjectDetails::class);
-    }
-
-    public function departments()
-    {
-        return $this->morphToMany(Department::class,'departmentable');
-    }
 }

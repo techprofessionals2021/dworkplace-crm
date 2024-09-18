@@ -2,6 +2,8 @@
 
 namespace App\Services\Project;
 
+use App\Http\Resources\WorkType\WorkTypeCollection;
+use App\Models\WorkType\WorkType;
 use App\Repositories\Project\ProjectRepository as ProjectProjectRepository;
 use App\Repositories\ProjectRepository;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +24,7 @@ class ProjectService
             $project = $this->projectRepository->create($data['general'])
                 ->addFinancialDetails($data['financial'])
                 ->addDepartments($data['other']['departments']);
-                // ->addSalespersons($data['other']['salespersons']);
+            // ->addSalespersons($data['other']['salespersons']);
 
             // if (isset($data['work_types'])) {
             //     $this->projectRepository->addWorkTypes($data['work_types']);
@@ -30,5 +32,19 @@ class ProjectService
 
             return $project;
         });
+    }
+
+
+    public function getWorkTypesWithOptions()
+    {
+        $workTypes = WorkType::with('department', 'options')->get();
+
+        $groupedWorkTypes = $workTypes->groupBy(function ($item) {
+            return $item->department->name;
+        });
+
+        // Return the grouped data via API Resource
+        return WorkTypeCollection::make($groupedWorkTypes);
+        
     }
 }

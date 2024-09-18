@@ -2,25 +2,29 @@
 
 namespace App\Http\Resources\WorkType;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-
 
 class WorkTypeResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
+    public function toArray($request)
     {
-        // return parent::toArray($request);
         return [
-            'id' => @$this->id,
-            'name' => @$this->name,
-            'type'=> @$this->type,
-            'department'=>@$this->department->name
+            'id' => $this->id,
+            'name' => $this->name,
+            'type' => $this->type,
+            'department' => [
+                'id' => $this->department->id,
+                'name' => $this->department->name,
+            ],
+            // Conditionally include the 'options' key only when type is 'dropdown'
+            $this->mergeWhen($this->type === 'dropdown', [
+                'options' => $this->options->map(function ($option) {
+                    return [
+                        'id' => $option->id,
+                        'value' => $option->option_value,
+                    ];
+                }),
+            ]),
         ];
     }
 }

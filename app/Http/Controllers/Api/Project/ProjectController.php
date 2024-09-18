@@ -78,4 +78,13 @@ class ProjectController extends Controller
     {
         //
     }
+
+    /**
+     * Retrive work types with options
+     */
+    public function getProjectWorkTypes()
+    {  
+       $result = $this->projectService->getWorkTypesWithOptions();    
+       return ResponseHelper::success($result, 'WorkTypes Retrieved successfully!',Response::HTTP_OK);
+    }
 }

@@ -78,6 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('work-type-options', WorkTypeOptionController::class);
 
     Route::apiResource('projects', ProjectController::class);
+    Route::get('project/work-types',[ProjectController::class,'getProjectWorkTypes']);
 
 
 

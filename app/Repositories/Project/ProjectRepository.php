@@ -16,9 +16,18 @@ class ProjectRepository
 
     public function addFinancialDetails(array $data): self
     {
+        
         $this->project->financialDetails()->create($data);
+    
+      
         return $this;
     }
+    //  public function addAttachments(array $data):self
+    //  {
+        
+    //     $this->project->addMedia()->toMediaCollection('images');
+
+    //  }
 
     public function addDepartments(array $departments): self
     {
@@ -29,7 +38,6 @@ class ProjectRepository
         //         'department_id' => $department['department_id'],
         //     ]);
         // }
-
         $this->project->departments()->attach($departments);
         return $this;
     }

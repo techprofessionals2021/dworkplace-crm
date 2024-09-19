@@ -6,10 +6,12 @@ namespace App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Project\Relationship\ProjectRelationship;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Project extends Model
+class Project extends Model implements HasMedia
 {
-    use HasFactory, ProjectRelationship;
+    use HasFactory, ProjectRelationship, InteractsWithMedia;
 
     protected $fillable = [
         'creator_id', 'project_code', 'sales_code', 'title', 'description',

@@ -87,4 +87,13 @@ class ProjectController extends Controller
        $result = $this->projectService->getWorkTypesWithOptions();    
        return ResponseHelper::success($result, 'WorkTypes Retrieved successfully!',Response::HTTP_OK);
     }
+
+    /**
+     * Retrive work types with options
+     */
+    public function getSalesPersons()
+    {  
+       $result = $this->projectService->getSalesPersons();    
+       return ResponseHelper::success($result, 'WorkTypes Retrieved successfully!',Response::HTTP_OK);
+    }
 }

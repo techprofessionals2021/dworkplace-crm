@@ -3,6 +3,7 @@
 namespace App\Services\Project;
 
 use App\Http\Resources\WorkType\WorkTypeCollection;
+use App\Models\User;
 use App\Models\WorkType\WorkType;
 use App\Repositories\Project\ProjectRepository as ProjectProjectRepository;
 use App\Repositories\ProjectRepository;
@@ -46,5 +47,13 @@ class ProjectService
         // Return the grouped data via API Resource
         return WorkTypeCollection::make($groupedWorkTypes);
         
+    }
+
+    public function getSalesPersons(){
+        $users = User::whereHas('departments',function($q){
+            $q->where('name','sales');
+        })->get();
+
+        dd($users);
     }
 }

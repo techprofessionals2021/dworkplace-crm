@@ -79,6 +79,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('projects', ProjectController::class);
     Route::get('project/work-types',[ProjectController::class,'getProjectWorkTypes']);
+    Route::get('get-sales-persons',[ProjectController::class,'getSalesPersons']);
 
 
 

@@ -26,7 +26,9 @@ class StoreRequest extends FormRequest
             'financial' => 'required|array',
             'other.departments' => 'required|array',
             'other.salespersons' => 'required|array',
-            'work_types' => 'nullable|array',
+            // 'work_types' => 'nullable|array',
         ];
     }
+   
+
 }

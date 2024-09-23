@@ -27,7 +27,7 @@ class ProjectService
             // if (isset($data['work_types'])) {
             //     $this->projectRepository->addWorkTypes($data['work_types']);
             // }
-
+dd($project);
             return $project;
         });
     }

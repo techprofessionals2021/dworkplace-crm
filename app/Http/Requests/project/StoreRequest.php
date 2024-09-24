@@ -19,16 +19,30 @@ class StoreRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+    // public function rules(): array
+    // {
+    //     return [
+    //         'general' => 'required|array',
+    //         'financial' => 'required|array',
+    //         'other.departments' => 'required|array',
+    //         'other.salespersons' => 'required|array',
+    //         // 'attachments'=>'required|array',
+    //         // 'work_types' => 'nullable|array',
+    //     ];
+    // }
     public function rules(): array
-    {
-        return [
-            'general' => 'required|array',
-            'financial' => 'required|array',
-            'other.departments' => 'required|array',
-            'other.salespersons' => 'required|array',
-            // 'work_types' => 'nullable|array',
-        ];
-    }
+{
+    return [
+        'general' => 'required|array',
+        'financial' => 'required|array',
+        'other.departments' => 'required|array',
+        'other.salespersons' => 'required|array',
+        'attachments' => 'array', // Make sure this is present
+        // 'attachments.*' => 'file|mimes:jpg,png,pdf,docx', // Validate the file types
+    ];
+}
+
+
    
 
 }

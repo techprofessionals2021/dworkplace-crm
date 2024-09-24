@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Project;
 use App\Helpers\Response\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\project\StoreRequest;
+use App\Http\Resources\Project\ProjectResource;
+use App\Models\Project\Project;
 use App\Services\Project\ProjectService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -41,10 +43,12 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-          $projectData = $request->all();
-          $result = $this->projectService->createProject($projectData);
+        $projectData = $request->all();
+        $result = $this->projectService->createProject($projectData);
+
+        $formatedResponse = new ProjectResource($result->getProject());
       
-        return ResponseHelper::success($result, 'Project created successfully!',Response::HTTP_CREATED);
+        return ResponseHelper::success($formatedResponse, 'Project created successfully!',Response::HTTP_CREATED);
         //
     }
 
@@ -96,5 +100,16 @@ class ProjectController extends Controller
     {  
        $result = $this->projectService->getSalesPersons();    
        return ResponseHelper::success($result, 'WorkTypes Retrieved successfully!',Response::HTTP_OK);
+    }
+
+    public function uploadAttachments(Request $request,$id){
+      $project = Project::find($id);
+      if ($project) {
+        foreach ($request->attachments as $attachment) {
+            $project->addMedia($attachment)->toMediaCollection('attachments');    
+        }
+        return ResponseHelper::success([],'Attachment Upload Succussfully');
+      }
+        
     }
 }

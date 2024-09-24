@@ -55,7 +55,7 @@ class ProjectRepository
         //         'pivot_id' => $department->pivot->id, // Access the pivot ID if it's set up
         //     ];
         // }));
-        dd($this);
+        // dd($this);
         return $this;
     }
 
@@ -95,5 +95,10 @@ class ProjectRepository
         return ProjectDepartment::where('projectable_id', $this->project->id)
             ->where('department_id', $departmentId)
             ->first()->id;
+    }
+
+    public function getProject(): Project
+    {
+        return $this->project;
     }
 }

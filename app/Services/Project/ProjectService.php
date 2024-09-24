@@ -28,11 +28,6 @@ class ProjectService
             ->addFinancialDetails($data['financial'])
             ->addDepartments($data['other']['departments']);
 
-        // Handle attachments
-        if (!empty($data['attachments'])) {
-            $this->projectRepository->addAttachments($data['attachments']);
-        }
-
         return $project;
     });
 }

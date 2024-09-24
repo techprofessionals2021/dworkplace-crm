@@ -10,6 +10,7 @@ class WorkTypeCollection extends ResourceCollection
     {
         return $this->collection->map(function ($workTypes, $department) {
             return [
+                'department_id' => $workTypes->first()->department->id,
                 'department' => $department,
                 'work_types' => WorkTypeResource::collection($workTypes),
             ];

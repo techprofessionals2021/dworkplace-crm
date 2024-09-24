@@ -16,18 +16,24 @@ class ProjectRepository
 
     public function addFinancialDetails(array $data): self
     {
-        
         $this->project->financialDetails()->create($data);
     
-      
         return $this;
     }
-    //  public function addAttachments(array $data):self
+    //  public function addAttachments(array $attachments):self
     //  {
-        
-    //     $this->project->addMedia()->toMediaCollection('images');
+    //     $this->project->addMedia($attachments)->toMediaCollection('attachments');    
+    //   }
+    public function addAttachments(array $attachments): self
+    {
+      
+        foreach ($attachments as $attachment) {
+            $this->project->addMedia($attachment)->toMediaCollection('attachments');    
+        }
+        return $this;
+    }
 
-    //  }
+    
 
     public function addDepartments(array $departments): self
     {

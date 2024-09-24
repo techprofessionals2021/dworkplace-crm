@@ -9,6 +9,7 @@ use App\Services\Project\ProjectService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+
 class ProjectController extends Controller
 {
 
@@ -24,7 +25,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+         // 
     }
 
     /**
@@ -38,11 +39,11 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
-        $projectData = $request->validated();
-        $result = $this->projectService->createProject($projectData);
-        
+          $projectData = $request->all();
+          $result = $this->projectService->createProject($projectData);
+      
         return ResponseHelper::success($result, 'Project created successfully!',Response::HTTP_CREATED);
         //
     }

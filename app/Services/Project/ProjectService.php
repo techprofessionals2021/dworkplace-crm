@@ -17,26 +17,27 @@ class ProjectService
     {
         $this->projectRepository = $projectRepository;
     }
-
+    
     public function createProject(array $data)
-    {
-      
-        return DB::transaction(function () use ($data) {
-            $project = $this->projectRepository->create($data['general'])
-                ->addFinancialDetails($data['financial'])
-                ->addDepartments($data['other']['departments']);
-                // ->addAttachments($data['attachments'] ?? []);
-              
-              
-                // ->addSalespersons($data['other']['salespersons']);
+   {
 
-            // if (isset($data['work_types'])) {
-            //     $this->projectRepository->addWorkTypes($data['work_types']);
-            // }
-            // dd($project);
-            return $project;
-        });
-    }
+    return DB::transaction(function () use ($data) {
+        // Create the project
+      
+        $project = $this->projectRepository->create($data['general'])
+            ->addFinancialDetails($data['financial'])
+            ->addDepartments($data['other']['departments']);
+
+        // Handle attachments
+        if (!empty($data['attachments'])) {
+            $this->projectRepository->addAttachments($data['attachments']);
+        }
+
+        return $project;
+    });
+}
+
+
 
 
     public function getWorkTypesWithOptions()
@@ -53,10 +54,12 @@ class ProjectService
     }
 
     public function getSalesPersons(){
-        $users = User::whereHas('departments',function($q){
-            $q->where('name','sales');
+        
+        $users = User::whereHas('departments', function($q) {
+            $q->where('name', 'Sales');
         })->get();
-
-        dd($users);
+        
+      return $users;
+       
     }
 }

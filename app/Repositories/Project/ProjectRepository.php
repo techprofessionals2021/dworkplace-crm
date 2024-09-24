@@ -44,7 +44,18 @@ class ProjectRepository
         //         'department_id' => $department['department_id'],
         //     ]);
         // }
-        $this->project->departments()->attach($departments);
+
+        $this->project->departments()->sync($departments);
+        $this->project->load('departments');
+
+        // dd($pivotRecords = $this->project->departments->map(function ($department) {
+        //     return [
+        //         'department_id' => $department->id,
+        //         'department_name' => $department->name,
+        //         'pivot_id' => $department->pivot->id, // Access the pivot ID if it's set up
+        //     ];
+        // }));
+        dd($this);
         return $this;
     }
 
@@ -60,16 +71,18 @@ class ProjectRepository
 
     public function addWorkTypes(array $workTypes): self
     {
-        foreach ($workTypes as $workType) {
-            ProjectWorkTypeValue::create([
-                'project_department_id' => $this->getProjectDepartmentId($workType['department_id']),
-                'work_type_id' => $workType['work_type_id'],
-                'option_id' => $workType['type'] === 'option' ? $workType['work_type_option_id'] : null,
-                'value' => $workType['type'] === 'value' ? $workType['value'] : null,
-                'type' => $workType['type'],
-            ]);
-        }
-        return $this;
+        // foreach ($workTypes as $workType) {
+        //     ProjectWorkTypeValue::create([
+        //         'project_department_id' => $this->getProjectDepartmentId($workType['department_id']),
+        //         'work_type_id' => $workType['work_type_id'],
+        //         'option_id' => $workType['type'] === 'option' ? $workType['work_type_option_id'] : null,
+        //         'value' => $workType['type'] === 'value' ? $workType['value'] : null,
+        //         'type' => $workType['type'],
+        //     ]);
+        // }
+        // return $this;
+
+
     }
 
     public function loadRelations(): Project

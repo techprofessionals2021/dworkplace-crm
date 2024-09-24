@@ -15,6 +15,8 @@ trait ProjectRelationship
 
     public function departments()
     {
-        return $this->morphToMany(Department::class,'departmentable');
+        return $this->morphToMany(Department::class,'departmentable')->withPivot('id');
     }
+
+    
 }

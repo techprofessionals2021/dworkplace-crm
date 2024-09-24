@@ -24,9 +24,9 @@ class ProjectService
                 ->addDepartments($data['other']['departments']);
                 // ->addSalespersons($data['other']['salespersons']);
 
-            // if (isset($data['work_types'])) {
-            //     $this->projectRepository->addWorkTypes($data['work_types']);
-            // }
+            if (isset($data['work_types'])) {
+                $this->projectRepository->addWorkTypes($data['work_types']);
+            }
 dd($project);
             return $project;
         });

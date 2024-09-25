@@ -26,10 +26,12 @@ class ProjectService
 
             $project = $this->projectRepository->create($data['general'])
                 ->addFinancialDetails($data['financial'])
-                ->addDepartments($data['other']['departments']);
-            if (isset($data['work_types'])) {
-                $this->projectRepository->addWorkTypes($data['work_types']);
-            }
+                ->addDepartments($data['other']['departments'])
+                ->addSalespersons($data['other']['salespersons']);
+
+            // if (isset($data['work_types'])) {
+            //     $this->projectRepository->addWorkTypes($data['work_types']);
+            // }
 
             return $project;
         });

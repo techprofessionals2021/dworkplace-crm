@@ -5,6 +5,7 @@ use App\Models\Department\Department;
 use App\Models\Project\Departmentable;
 use App\Models\Project\ProjectDetails;
 use App\Models\Project\ProjectWorkTypeValue;
+use App\Models\User;
 
 trait ProjectRelationship
 {
@@ -30,4 +31,11 @@ trait ProjectRelationship
             'id' // Local key on departmentable table...
         )->where('departmentables.departmentable_type', Project::class);
     }
+
+    public function salespersons()
+    {
+        return $this->belongsToMany(User::class, 'project_salespersons');
+    }
+
+
 }

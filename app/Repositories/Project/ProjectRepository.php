@@ -61,11 +61,7 @@ class ProjectRepository
 
     public function addSalespersons(array $salespersons): self
     {
-        foreach ($salespersons as $salesperson) {
-            $this->project->salespersons()->create([
-                'user_id' => $salesperson['user_id'],
-            ]);
-        }
+        $this->project->salespersons()->attach($salespersons);
         return $this;
     }
 

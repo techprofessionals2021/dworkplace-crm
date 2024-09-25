@@ -62,6 +62,7 @@ class ProjectRepository
     public function addSalespersons(array $salespersons): self
     {
         $this->project->salespersons()->attach($salespersons);
+        $this->project->load('salespersons');
         return $this;
     }
 
@@ -79,6 +80,7 @@ class ProjectRepository
         // return $this;
         // Flatten the work types data for bulk insertion
         // Transform workTypes and prepare for bulk insert
+        dd($workTypes);
         $workTypeData = collect($workTypes)->flatMap(function ($workTypesArray, $departmentId) {
             // Get the pivot ID (departmentable_id) for each department using $this
             $departmentableId = $this->getDepartmentableId($departmentId);

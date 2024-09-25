@@ -17,20 +17,23 @@ class ProjectService
     {
         $this->projectRepository = $projectRepository;
     }
-    
+
     public function createProject(array $data)
-   {
+    {
 
-    return DB::transaction(function () use ($data) {
-        // Create the project
-      
-        $project = $this->projectRepository->create($data['general'])
-            ->addFinancialDetails($data['financial'])
-            ->addDepartments($data['other']['departments']);
+        return DB::transaction(function () use ($data) {
+            // Create the project
 
-        return $project;
-    });
-}
+            $project = $this->projectRepository->create($data['general'])
+                ->addFinancialDetails($data['financial'])
+                ->addDepartments($data['other']['departments']);
+            if (isset($data['work_types'])) {
+                $this->projectRepository->addWorkTypes($data['work_types']);
+            }
+
+            return $project;
+        });
+    }
 
 
 
@@ -45,16 +48,15 @@ class ProjectService
 
         // Return the grouped data via API Resource
         return WorkTypeCollection::make($groupedWorkTypes);
-        
     }
 
-    public function getSalesPersons(){
-        
-        $users = User::whereHas('departments', function($q) {
+    public function getSalesPersons()
+    {
+
+        $users = User::whereHas('departments', function ($q) {
             $q->where('name', 'Sales');
         })->get();
-        
-      return $users;
-       
+
+        return $users;
     }
 }

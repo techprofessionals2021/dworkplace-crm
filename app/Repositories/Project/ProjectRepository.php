@@ -3,6 +3,7 @@
 namespace App\Repositories\Project;
 
 use App\Models\Project\Project;
+use App\Models\Project\ProjectWorkTypeValue;
 
 class ProjectRepository
 {
@@ -17,7 +18,7 @@ class ProjectRepository
     public function addFinancialDetails(array $data): self
     {
         $this->project->financialDetails()->create($data);
-    
+
         return $this;
     }
     //  public function addAttachments(array $attachments):self
@@ -26,14 +27,14 @@ class ProjectRepository
     //   }
     public function addAttachments(array $attachments): self
     {
-      
+
         foreach ($attachments as $attachment) {
-            $this->project->addMedia($attachment)->toMediaCollection('attachments');    
+            $this->project->addMedia($attachment)->toMediaCollection('attachments');
         }
         return $this;
     }
 
-    
+
 
     public function addDepartments(array $departments): self
     {
@@ -55,7 +56,6 @@ class ProjectRepository
         //         'pivot_id' => $department->pivot->id, // Access the pivot ID if it's set up
         //     ];
         // }));
-        // dd($this);
         return $this;
     }
 
@@ -81,8 +81,44 @@ class ProjectRepository
         //     ]);
         // }
         // return $this;
+        // Flatten the work types data for bulk insertion
+        // Transform workTypes and prepare for bulk insert
+        $workTypeData = collect($workTypes)->flatMap(function ($workTypesArray, $departmentId) {
+            // Get the pivot ID (departmentable_id) for each department using $this
+            $departmentableId = $this->getDepartmentableId($departmentId);
+
+            if ($departmentableId) {
+                return collect($workTypesArray)->map(function ($workType) use ($departmentableId) {
+                    return [
+                        'project_department_id' => $departmentableId,
+                        'work_type_id' => $workType['work_type_id'],
+                        'option_id' => $workType['work_type_option_id'] ?? null,
+                        'value' => $workType['value'] ?? null,
+                        'type' => isset($workType['work_type_option_id']) ? 'option' : 'value',
+                    ];
+                });
+            }
+            return []; // Return an empty array if no departmentableId is found
+        })->toArray();
+
+        // Perform bulk insert for work types
+        if (!empty($workTypeData)) {
+            ProjectWorkTypeValue::insert($workTypeData);
+        }
+
+        // Load the work type values into the project instance
+        $this->project->load('workTypeValues');
 
 
+        dd($this);
+        return $this;
+    }
+
+    protected function getDepartmentableId($departmentId)
+    {
+        // Access the already-loaded departments using $this->project
+        $department = $this->project->departments->firstWhere('id', $departmentId);
+        return $department ? $department->pivot->id : null; // Get the pivot ID (departmentable_id)
     }
 
     public function loadRelations(): Project

@@ -3,6 +3,7 @@
 namespace App\Repositories\Project;
 
 use App\Models\Project\Project;
+use App\Models\Project\ProjectWorkType;
 use App\Models\Project\ProjectWorkTypeValue;
 
 class ProjectRepository
@@ -68,47 +69,24 @@ class ProjectRepository
 
     public function addWorkTypes(array $workTypes): self
     {
-        // foreach ($workTypes as $workType) {
-        //     ProjectWorkTypeValue::create([
-        //         'project_department_id' => $this->getProjectDepartmentId($workType['department_id']),
-        //         'work_type_id' => $workType['work_type_id'],
-        //         'option_id' => $workType['type'] === 'option' ? $workType['work_type_option_id'] : null,
-        //         'value' => $workType['type'] === 'value' ? $workType['value'] : null,
-        //         'type' => $workType['type'],
-        //     ]);
-        // }
-        // return $this;
-        // Flatten the work types data for bulk insertion
-        // Transform workTypes and prepare for bulk insert
-        dd($workTypes);
-        $workTypeData = collect($workTypes)->flatMap(function ($workTypesArray, $departmentId) {
-            // Get the pivot ID (departmentable_id) for each department using $this
-            $departmentableId = $this->getDepartmentableId($departmentId);
+        // Prepare the work types array for bulk insert
+        $workTypesArray = array_map(function ($workType) {
+            return [
+                'workable_id' => $this->project->id,  // ID of the project or direct project
+                'workable_type' => Project::class,  // Model name for polymorphic relation
+                'work_type_id' => $workType['work_type_id'],
+                'option_id' => $workType['work_type_option_id'] ?? null,
+                'value' => $workType['value'] ?? null,
+                'type' => isset($workType['work_type_option_id']) ? 'option' : 'value',
+                'created_at' => now(), // Add timestamp for bulk insert
+                'updated_at' => now(),
+            ];
+        }, $workTypes);
 
-            if ($departmentableId) {
-                return collect($workTypesArray)->map(function ($workType) use ($departmentableId) {
-                    return [
-                        'project_department_id' => $departmentableId,
-                        'work_type_id' => $workType['work_type_id'],
-                        'option_id' => $workType['work_type_option_id'] ?? null,
-                        'value' => $workType['value'] ?? null,
-                        'type' => isset($workType['work_type_option_id']) ? 'option' : 'value',
-                    ];
-                });
-            }
-            return []; // Return an empty array if no departmentableId is found
-        })->toArray();
-
-        // Perform bulk insert for work types
-        if (!empty($workTypeData)) {
-            ProjectWorkTypeValue::insert($workTypeData);
-        }
-
+        ProjectWorkType::insert($workTypesArray);
+        
         // Load the work type values into the project instance
-        $this->project->load('workTypeValues');
-
-
-        dd($this);
+        $this->project->load('workTypes');
         return $this;
     }
 

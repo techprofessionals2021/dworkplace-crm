@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Http\Resources\WorkTypeOption\WorkTypeOptionResource;
 use App\Http\Requests\WorkTypeOption\StoreRequest;
 use App\Services\WorkTypeOption\WorkTypeOptionService;
+use App\Models\WorkTypeOption\WorkTypeOption;
 
 class WorkTypeOptionController extends Controller
 {
@@ -22,6 +23,7 @@ class WorkTypeOptionController extends Controller
      */
     public function index()
     {
+        
         $workTypeOptions = $this->workTypeOptionService->getAllWorkTypeOptions();
         $allWorkTypeOptions = WorkTypeOptionResource::collection($workTypeOptions);
         return ResponseHelper::success($allWorkTypeOptions, "Work Type Options Fetched Successfully", Response::HTTP_OK);
@@ -84,4 +86,12 @@ class WorkTypeOptionController extends Controller
             return ResponseHelper::success(null, "Work Type Option Deleted Successfully", Response::HTTP_OK);
         }
     }
+
+    public function filterWorkTypeOptions($id)
+{
+
+    $worktypeOptions = WorkTypeOption::where('work_type_id', $id)->get();
+    return ResponseHelper::success($worktypeOptions, "Specific Work Type Options  Fetched Successfully", Response::HTTP_OK);
+}
+
 }

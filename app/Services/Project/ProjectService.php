@@ -62,4 +62,16 @@ class ProjectService
 
         return $users;
     }
+
+    public function getAllProjects(){
+
+    }
+
+    public function getDepartmentProjects(){
+        
+    }
+
+    public function getAssignedProjects(){
+        
+    }
 }

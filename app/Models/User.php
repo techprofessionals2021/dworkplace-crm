@@ -64,9 +64,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'user_roles');
     }
 
-    public function permissions()
+    public function getPermissions()
     {
-        return $this->belongsToMany(Permission::class, 'role_permissions', 'role_id', 'permission_id');
+        return Permission::join('role_permissions', 'permissions.id', '=', 'role_permissions.permission_id')
+        ->join('roles', 'role_permissions.role_id', '=', 'roles.id')
+        ->whereIn('roles.id', $this->roles->pluck('id'))
+        ->select('permissions.*')
+        ->get();
     }
 
     public function departments()

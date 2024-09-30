@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Project;
 
 use App\Helpers\Response\ResponseHelper;
+use App\Helpers\Traits\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\project\StoreRequest;
 use App\Http\Resources\Project\ProjectResource;
@@ -14,6 +15,7 @@ use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {
+    use UserHelper;
 
     protected $projectService;
 
@@ -27,7 +29,13 @@ class ProjectController extends Controller
      */
     public function index()
     {
-         // 
+        if($this->hasPermission('view_all_projects')){
+           // all projects
+        }elseif($this->hasPermission('view_department_projects')){
+           // view allprojects of department that user belongs 
+        }else{
+           // view assigned project
+        } 
     }
 
     /**
@@ -57,7 +65,7 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        //
+
     }
 
     /**

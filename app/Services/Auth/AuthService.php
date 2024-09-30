@@ -3,12 +3,14 @@
 
 namespace App\Services\Auth;
 
+use App\Helpers\Traits\UserHelper;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
 class AuthService
 {
+    use UserHelper;
     public function register($data)
     {
         $user = User::create([
@@ -34,7 +36,7 @@ class AuthService
     {
 
 
-        $user = User::where('email', $credentials['email'])->with(['roles', 'permissions'])->first();
+        $user = User::where('email', $credentials['email'])->with(['roles'])->first();
         // dd('asd');
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return null;
@@ -42,9 +44,9 @@ class AuthService
 
         // dd($user->getDepartmentPermissions()->pluck('name'));
         $token = $user->createToken('auth_token')->plainTextToken;
-
         $roles = $user->roles->pluck('name');
-        $permissions = $user->permissions->pluck('name');
+
+        $permissions = $user->getPermissions()->pluck('name');
         $departPermissions = $user->getDepartmentPermissions()->pluck('name');
         $allPermissions =  $permissions->merge($departPermissions);
 

@@ -16,7 +16,7 @@ use App\Http\Controllers\Api\Client\ClientController;
 use App\Http\Controllers\Api\WorkType\WorkTypeController;
 use App\Http\Controllers\Api\DirectClient\DirectClientController;
 use App\Http\Controllers\Api\WorkTypeOption\WorkTypeOptionController;
-
+use App\Http\Controllers\Api\ProjectTransaction\ProjectTransactionController;
 use App\Http\Controllers\Api\Brand\BrandController;
 use App\Http\Controllers\Api\Project\ProjectController;
 
@@ -78,10 +78,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('work-type-options', WorkTypeOptionController::class);
     Route::get('filter-work-type-option/{id}', [WorkTypeOptionController::class, 'filterWorkTypeOptions']);
 
-    
+
     Route::apiResource('projects', ProjectController::class);
     Route::get('project/work-types',[ProjectController::class,'getProjectWorkTypes']);
     Route::get('get-sales-persons',[ProjectController::class,'getSalesPersons']);
+
+    Route::apiResource('project-transaction',ProjectTransactionController::class);
 
 });
 

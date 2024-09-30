@@ -18,7 +18,7 @@ trait ProjectRelationship
         return $this->morphToMany(Department::class,'departmentable');
     }
 
-    public function project_transactions(): MorphMany
+    public function projectTransactions(): MorphMany
     {
         return $this->morphMany(ProjectTransaction::class, 'projectable');
     }

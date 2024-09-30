@@ -43,8 +43,7 @@ trait ProjectRelationship
         return $this->morphMany(ProjectWorkType::class, 'workable');
     }
 
-
-    public function project_transactions(): MorphMany
+    public function projectTransactions(): MorphMany
     {
         return $this->morphMany(ProjectTransaction::class, 'projectable');
     }

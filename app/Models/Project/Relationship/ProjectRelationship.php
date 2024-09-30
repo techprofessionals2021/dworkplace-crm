@@ -44,4 +44,8 @@ trait ProjectRelationship
     }
 
 
+    public function project_transactions(): MorphMany
+    {
+        return $this->morphMany(ProjectTransaction::class, 'projectable');
+    }
 }

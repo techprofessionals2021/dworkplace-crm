@@ -30,9 +30,7 @@ class ProjectService
                 ->addSalespersons($data['other']['salespersons'])
                 ->addWorkTypes($data['work_types']);
 
-            // if (isset($data['work_types'])) {
-            //     $this->projectRepository->addWorkTypes($data['work_types']);
-            // }
+ 
 
             return $project;
         });

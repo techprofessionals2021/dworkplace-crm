@@ -29,14 +29,30 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        if($this->hasPermission('view_all_projects')){
-           // all projects
-        }elseif($this->hasPermission('view_department_projects')){
-           // view allprojects of department that user belongs 
-        }else{
-           // view assigned project
-        } 
-    }
+         if($this->hasPermission('view_all_projects')){
+
+              $all_projects=$this->projectService->getAllProjects();
+
+
+              $projectResouce = ProjectResource::collection($all_projects);
+             return $projectResouce;
+            //   return ResponseHelper::success($projectResouce, 'All Projects fetched successfully!',Response::HTTP_CREATED);
+
+           }
+        //    elseif($this->hasPermission('view_department_projects')){
+
+        //   $depart_projects=$this->projectService->getDepartmentProjects();
+        //   return ResponseHelper::success($depart_projects, 'Depart Projects fetched successfully!',Response::HTTP_CREATED);
+
+        //   }else{
+
+        //     if($this->hasPermission('view_assigned_projects')){
+        //     $assignedProjects=$this->projectService->getAssignedProjects();
+        //     return ResponseHelper::success($all_projects, 'Assigned Projects fetched successfully!',Response::HTTP_CREATED);
+        //     }
+
+        //  }
+     }
 
     /**
      * Show the form for creating a new resource.
@@ -55,7 +71,7 @@ class ProjectController extends Controller
         $result = $this->projectService->createProject($projectData);
 
         $formatedResponse = new ProjectResource($result->getProject());
-      
+
         return ResponseHelper::success($formatedResponse, 'Project created successfully!',Response::HTTP_CREATED);
         //
     }
@@ -96,8 +112,8 @@ class ProjectController extends Controller
      * Retrive work types with options
      */
     public function getProjectWorkTypes()
-    {  
-       $result = $this->projectService->getWorkTypesWithOptions();    
+    {
+       $result = $this->projectService->getWorkTypesWithOptions();
        return ResponseHelper::success($result, 'WorkTypes Retrieved successfully!',Response::HTTP_OK);
     }
 
@@ -105,8 +121,8 @@ class ProjectController extends Controller
      * Retrive work types with options
      */
     public function getSalesPersons()
-    {  
-       $result = $this->projectService->getSalesPersons();    
+    {
+       $result = $this->projectService->getSalesPersons();
        return ResponseHelper::success($result, 'WorkTypes Retrieved successfully!',Response::HTTP_OK);
     }
 
@@ -114,10 +130,11 @@ class ProjectController extends Controller
       $project = Project::find($id);
       if ($project) {
         foreach ($request->attachments as $attachment) {
-            $project->addMedia($attachment)->toMediaCollection('attachments');    
+            $project->addMedia($attachment)->toMediaCollection('attachments');
         }
         return ResponseHelper::success([],'Attachment Upload Succussfully');
       }
-        
+
     }
+    
 }

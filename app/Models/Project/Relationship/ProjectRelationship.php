@@ -5,8 +5,14 @@ use App\Models\Department\Department;
 use App\Models\Project\Departmentable;
 use App\Models\Project\ProjectDetails;
 use App\Models\Project\ProjectWorkType;
+use App\Models\ProjectAssignee\ProjectAssignee;
 use App\Models\Project\ProjectWorkTypeValue;
 use App\Models\User;
+use App\Models\SourceAccount\SourceAccount;
+use App\Models\Client\Client;
+use App\Models\Status\Status;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+
 
 trait ProjectRelationship
 {
@@ -47,4 +53,18 @@ trait ProjectRelationship
     {
         return $this->morphMany(ProjectTransaction::class, 'projectable');
     }
+    public function projectAssignee():MorphMany
+    {
+        return $this->morphMany(ProjectAssignee::class,'projectable');
+    }
+     public function source_accounts()
+     {
+       return $this->belongsTo(SourceAccount::class ,'source_account_id'); // Assuming this is the correct relationship
+     }
+     public function clients(){
+      return $this->belongsTo(Client::class ,'client_id');
+     }
+     public function status(){
+        return $this->belongsTo(Status::class,'status_id');
+     }
 }

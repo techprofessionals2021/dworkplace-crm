@@ -7,7 +7,10 @@ use App\Helpers\Traits\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\project\StoreRequest;
 use App\Http\Resources\Project\ProjectResource;
+use App\Http\Resources\project\ProjectDetailResource;
 use App\Models\Project\Project;
+use App\Models\Project\ProjectDetails;
+use App\Models\Project\projectTransaction;
 use App\Services\Project\ProjectService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -33,25 +36,23 @@ class ProjectController extends Controller
 
               $all_projects=$this->projectService->getAllProjects();
 
-
               $projectResouce = ProjectResource::collection($all_projects);
-             return $projectResouce;
-            //   return ResponseHelper::success($projectResouce, 'All Projects fetched successfully!',Response::HTTP_CREATED);
+
+            return ResponseHelper::success($projectResouce, 'All Projects fetched successfully!',Response::HTTP_CREATED);
 
            }
-        //    elseif($this->hasPermission('view_department_projects')){
+          elseif($this->hasPermission('view_department_projects')){
 
-        //   $depart_projects=$this->projectService->getDepartmentProjects();
-        //   return ResponseHelper::success($depart_projects, 'Depart Projects fetched successfully!',Response::HTTP_CREATED);
+          $depart_projects=$this->projectService->getDepartmentProjects();
+          return ResponseHelper::success($depart_projects, 'Depart Projects fetched successfully!',Response::HTTP_CREATED);
 
-        //   }else{
+          }else{
 
-        //     if($this->hasPermission('view_assigned_projects')){
-        //     $assignedProjects=$this->projectService->getAssignedProjects();
-        //     return ResponseHelper::success($all_projects, 'Assigned Projects fetched successfully!',Response::HTTP_CREATED);
-        //     }
-
-        //  }
+            if($this->hasPermission('view_assigned_projects')){
+            $assignedProjects=$this->projectService->getAssignedProjects();
+            return ResponseHelper::success($all_projects, 'Assigned Projects fetched successfully!',Response::HTTP_CREATED);
+            }
+         }
      }
 
     /**
@@ -136,5 +137,20 @@ class ProjectController extends Controller
       }
 
     }
-    
+
+
+public function getProjectDetail($id)
+{
+    $project = Project::with([
+        'clients', 'sourceAccounts', 'financialDetails', 'departments',
+        'salespersons', 'workTypes', 'media', 'projectTransactions',
+        'projectAssignees', 'status'
+    ])->findOrFail($id);
+
+      $projectDetailResource =  new ProjectDetailResource($project);
+      return ResponseHelper::success($projectDetailResource, "projectDetailResource Fetched Successfully", Response::HTTP_OK);
+
+}
+
+
 }

@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\SourceAccount\SourceAccount;
 use App\Models\Client\Client;
 use App\Models\Status\Status;
+use App\Models\Project\projectTransaction;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 
@@ -53,11 +54,11 @@ trait ProjectRelationship
     {
         return $this->morphMany(ProjectTransaction::class, 'projectable');
     }
-    public function projectAssignee():MorphMany
+    public function projectAssignees():MorphMany
     {
         return $this->morphMany(ProjectAssignee::class,'projectable');
     }
-     public function source_accounts()
+     public function sourceAccounts()
      {
        return $this->belongsTo(SourceAccount::class ,'source_account_id'); // Assuming this is the correct relationship
      }

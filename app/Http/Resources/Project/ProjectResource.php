@@ -19,7 +19,7 @@ class ProjectResource extends JsonResource
             'id' => @$this->id,
             'sales_code'=>@$this->sales_code,
             'title'=>@$this->title,
-            'source_account' =>@$this->source_accounts->name,
+            'source_account' =>@$this->sourceAccounts->name,
             'client'=>@$this->clients->name,
             'deadline'=>@$this->deadline,
             'department'=>@$this->departments->pluck('name'),

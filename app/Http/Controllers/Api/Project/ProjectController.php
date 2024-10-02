@@ -7,7 +7,10 @@ use App\Helpers\Traits\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\project\StoreRequest;
 use App\Http\Resources\Project\ProjectResource;
+use App\Http\Resources\project\ProjectDetailResource;
 use App\Models\Project\Project;
+use App\Models\Project\ProjectDetails;
+use App\Models\Project\projectTransaction;
 use App\Services\Project\ProjectService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -29,14 +32,28 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        if($this->hasPermission('view_all_projects')){
-           // all projects
-        }elseif($this->hasPermission('view_department_projects')){
-           // view allprojects of department that user belongs 
-        }else{
-           // view assigned project
-        } 
-    }
+         if($this->hasPermission('view_all_projects')){
+
+              $all_projects=$this->projectService->getAllProjects();
+
+              $projectResouce = ProjectResource::collection($all_projects);
+
+            return ResponseHelper::success($projectResouce, 'All Projects fetched successfully!',Response::HTTP_CREATED);
+
+           }
+          elseif($this->hasPermission('view_department_projects')){
+
+          $depart_projects=$this->projectService->getDepartmentProjects();
+          return ResponseHelper::success($depart_projects, 'Depart Projects fetched successfully!',Response::HTTP_CREATED);
+
+          }else{
+
+            if($this->hasPermission('view_assigned_projects')){
+            $assignedProjects=$this->projectService->getAssignedProjects();
+            return ResponseHelper::success($all_projects, 'Assigned Projects fetched successfully!',Response::HTTP_CREATED);
+            }
+         }
+     }
 
     /**
      * Show the form for creating a new resource.
@@ -55,7 +72,7 @@ class ProjectController extends Controller
         $result = $this->projectService->createProject($projectData);
 
         $formatedResponse = new ProjectResource($result->getProject());
-      
+
         return ResponseHelper::success($formatedResponse, 'Project created successfully!',Response::HTTP_CREATED);
         //
     }
@@ -96,8 +113,8 @@ class ProjectController extends Controller
      * Retrive work types with options
      */
     public function getProjectWorkTypes()
-    {  
-       $result = $this->projectService->getWorkTypesWithOptions();    
+    {
+       $result = $this->projectService->getWorkTypesWithOptions();
        return ResponseHelper::success($result, 'WorkTypes Retrieved successfully!',Response::HTTP_OK);
     }
 
@@ -105,8 +122,8 @@ class ProjectController extends Controller
      * Retrive work types with options
      */
     public function getSalesPersons()
-    {  
-       $result = $this->projectService->getSalesPersons();    
+    {
+       $result = $this->projectService->getSalesPersons();
        return ResponseHelper::success($result, 'WorkTypes Retrieved successfully!',Response::HTTP_OK);
     }
 
@@ -114,10 +131,26 @@ class ProjectController extends Controller
       $project = Project::find($id);
       if ($project) {
         foreach ($request->attachments as $attachment) {
-            $project->addMedia($attachment)->toMediaCollection('attachments');    
+            $project->addMedia($attachment)->toMediaCollection('attachments');
         }
         return ResponseHelper::success([],'Attachment Upload Succussfully');
       }
-        
+
     }
+
+
+public function getProjectDetail($id)
+{
+    $project = Project::with([
+        'clients', 'sourceAccounts', 'financialDetails', 'departments',
+        'salespersons', 'workTypes', 'media', 'projectTransactions',
+        'projectAssignees', 'status'
+    ])->findOrFail($id);
+
+      $projectDetailResource =  new ProjectDetailResource($project);
+      return ResponseHelper::success($projectDetailResource, "projectDetailResource Fetched Successfully", Response::HTTP_OK);
+
+}
+
+
 }

@@ -39,7 +39,7 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('create-user', [AuthController::class, 'register']);
-    
+
     // This route will now be accessible to authenticated users only
     Route::apiResource('brands', BrandController::class);
 
@@ -87,6 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('get-sales-persons',[ProjectController::class,'getSalesPersons']);
     Route::post('project/{id}/upload-attachments',[ProjectController::class,'uploadAttachments']);
     Route::get('project-detail/{id}',[ProjectController::class,'getProjectDetail']);
+    Route::post('project/create-thread', [ProjectController::class, 'createThread']);
 
 
     Route::apiResource('project-transaction',ProjectTransactionController::class);

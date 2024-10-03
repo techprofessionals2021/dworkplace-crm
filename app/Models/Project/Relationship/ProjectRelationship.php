@@ -4,6 +4,7 @@ namespace App\Models\Project\Relationship;
 use App\Models\Department\Department;
 use App\Models\Project\Departmentable;
 use App\Models\Project\ProjectDetails;
+use App\Models\Project\ProjectThread;
 use App\Models\Project\ProjectWorkType;
 use App\Models\ProjectAssignee\ProjectAssignee;
 use App\Models\Project\ProjectWorkTypeValue;
@@ -58,14 +59,18 @@ trait ProjectRelationship
     {
         return $this->morphMany(ProjectAssignee::class,'projectable');
     }
-     public function sourceAccounts()
-     {
+    public function sourceAccounts()
+    {
        return $this->belongsTo(SourceAccount::class ,'source_account_id'); // Assuming this is the correct relationship
-     }
-     public function clients(){
+    }
+    public function clients(){
       return $this->belongsTo(Client::class ,'client_id');
-     }
-     public function status(){
+    }
+    public function status(){
         return $this->belongsTo(Status::class,'status_id');
-     }
+    }
+
+    public function projectThreads(){
+        return $this->morphMany(ProjectThread::class, 'threadable');
+    }
 }

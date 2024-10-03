@@ -31,18 +31,18 @@ class StoreRequest extends FormRequest
     //     ];
     // }
     public function rules(): array
-{
-    return [
-        'general' => 'required|array',
-        'financial' => 'required|array',
-        'other.departments' => 'required|array',
-        'other.salespersons' => 'required|array',
-        'attachments' => 'array', // Make sure this is present
-        // 'attachments.*' => 'file|mimes:jpg,png,pdf,docx', // Validate the file types
-    ];
-}
+    {
+        return [
+            'general' => 'required|array',
+            'financial' => 'required|array',
+            'other.departments' => 'required|array',
+            'other.salespersons' => 'required|array',
+            'attachments' => 'array', // Make sure this is present
+            // 'attachments.*' => 'file|mimes:jpg,png,pdf,docx', // Validate the file types
+        ];
+    }
 
 
-   
+
 
 }

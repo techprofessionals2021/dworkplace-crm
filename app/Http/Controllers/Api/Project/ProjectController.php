@@ -6,6 +6,7 @@ use App\Helpers\Response\ResponseHelper;
 use App\Helpers\Traits\UserHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\project\StoreRequest;
+use App\Http\Requests\project\ThreadRequest;
 use App\Http\Resources\Project\ProjectResource;
 use App\Http\Resources\project\ProjectDetailResource;
 use App\Models\Project\Project;
@@ -139,18 +140,25 @@ class ProjectController extends Controller
     }
 
 
-public function getProjectDetail($id)
-{
-    $project = Project::with([
-        'clients', 'sourceAccounts', 'financialDetails', 'departments',
-        'salespersons', 'workTypes', 'media', 'projectTransactions',
-        'projectAssignees', 'status'
-    ])->findOrFail($id);
+    public function getProjectDetail($id)
+    {
+        $project = Project::with([
+            'clients', 'sourceAccounts', 'financialDetails', 'departments',
+            'salespersons', 'workTypes', 'media', 'projectTransactions',
+            'projectAssignees', 'status'
+        ])->findOrFail($id);
 
-      $projectDetailResource =  new ProjectDetailResource($project);
-      return ResponseHelper::success($projectDetailResource, "projectDetailResource Fetched Successfully", Response::HTTP_OK);
+        $projectDetailResource =  new ProjectDetailResource($project);
+        return ResponseHelper::success($projectDetailResource, "projectDetailResource Fetched Successfully", Response::HTTP_OK);
 
-}
+    }
 
+    public function createThread(ThreadRequest $request)
+    {
+        $threadData = $request->validated();
+        $thread = $this->projectService->createThreadMessage($threadData);
+
+        return ResponseHelper::success($thread, "Project Thread Created successfully", Response::HTTP_OK);
+    }
 
 }

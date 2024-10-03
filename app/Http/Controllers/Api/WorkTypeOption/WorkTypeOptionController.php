@@ -23,7 +23,7 @@ class WorkTypeOptionController extends Controller
      */
     public function index()
     {
-        
+
         $workTypeOptions = $this->workTypeOptionService->getAllWorkTypeOptions();
         $allWorkTypeOptions = WorkTypeOptionResource::collection($workTypeOptions);
         return ResponseHelper::success($allWorkTypeOptions, "Work Type Options Fetched Successfully", Response::HTTP_OK);
@@ -88,10 +88,10 @@ class WorkTypeOptionController extends Controller
     }
 
     public function filterWorkTypeOptions($id)
-{
+    {
 
-    $worktypeOptions = WorkTypeOption::where('work_type_id', $id)->get();
-    return ResponseHelper::success($worktypeOptions, "Specific Work Type Options  Fetched Successfully", Response::HTTP_OK);
-}
+        $worktypeOptions = WorkTypeOption::where('work_type_id', $id)->get();
+        return ResponseHelper::success($worktypeOptions, "Specific Work Type Options Fetched Successfully", Response::HTTP_OK);
+    }
 
 }

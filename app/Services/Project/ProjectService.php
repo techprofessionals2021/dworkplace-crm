@@ -33,7 +33,7 @@ class ProjectService
                 ->addSalespersons($data['other']['salespersons'])
                 ->addWorkTypes($data['work_types']);
 
- 
+
 
             return $project;
         });
@@ -85,5 +85,10 @@ class ProjectService
         $assigned_project=Project::wherehas('projectAssignee',fn($q)=> $q->where('user_id',$user->id))->get();
         return $assigned_project;
 
-     }
+    }
+
+    public function createThreadMessage(array $data)
+    {
+        return ;
+    }
 }

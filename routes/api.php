@@ -84,7 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('project/work-types',[ProjectController::class,'getProjectWorkTypes']);
     Route::get('get-sales-persons',[ProjectController::class,'getSalesPersons']);
     Route::post('project/{id}/upload-attachments',[ProjectController::class,'uploadAttachments']);
-    Route::get('project-detail/{id}',[ProjectController::class,'getProjectDetail']);
+   
 
 
     Route::apiResource('project-transaction',ProjectTransactionController::class);

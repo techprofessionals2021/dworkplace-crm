@@ -83,6 +83,15 @@ class ProjectController extends Controller
     public function show(string $id)
     {
 
+        $project = Project::with([
+            'clients', 'sourceAccounts', 'financialDetails', 'departments',
+            'salespersons', 'workTypes', 'media', 'projectTransactions',
+            'projectAssignees', 'status'
+        ])->findOrFail($id);
+
+          $projectDetailResource =  new ProjectDetailResource($project);
+          return ResponseHelper::success($projectDetailResource, "projectDetailResource Fetched Successfully", Response::HTTP_OK);
+
     }
 
     /**
@@ -139,18 +148,7 @@ class ProjectController extends Controller
     }
 
 
-public function getProjectDetail($id)
-{
-    $project = Project::with([
-        'clients', 'sourceAccounts', 'financialDetails', 'departments',
-        'salespersons', 'workTypes', 'media', 'projectTransactions',
-        'projectAssignees', 'status'
-    ])->findOrFail($id);
 
-      $projectDetailResource =  new ProjectDetailResource($project);
-      return ResponseHelper::success($projectDetailResource, "projectDetailResource Fetched Successfully", Response::HTTP_OK);
-
-}
 
 
 }

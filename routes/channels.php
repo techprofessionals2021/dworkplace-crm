@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('thread.{threadable_type}.{threadable_id}', function ($user, $threadable_type, $threadable_id) {
+
+    return true;
+});

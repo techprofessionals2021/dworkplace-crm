@@ -86,9 +86,4 @@ class ProjectService
         return $assigned_project;
 
     }
-
-    public function createThreadMessage(array $data)
-    {
-        return ;
-    }
 }

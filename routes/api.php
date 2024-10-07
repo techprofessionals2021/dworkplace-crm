@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\ProjectTransaction\ProjectTransactionController;
 use App\Http\Controllers\Api\Brand\BrandController;
 use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ProjectAssignee\ProjectAssigneeController;
+use App\Http\Controllers\Api\ProjectUpdate\ProjectUpdateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +93,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('project-transaction',ProjectTransactionController::class);
     Route::apiResource('project-assignee',ProjectAssigneeController::class);
+
+    Route::apiResource('project-update', ProjectUpdateController::class);
 
 
 });

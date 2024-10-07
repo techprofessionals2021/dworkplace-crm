@@ -87,7 +87,12 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-
+        $project = $this->projectService->getProjectDetails($id);
+        if($project){
+            return ResponseHelper::success($project, "projectDetailResource Fetched Successfully", Response::HTTP_OK);
+        } else {
+            return ResponseHelper::error('Project Not Found', Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**

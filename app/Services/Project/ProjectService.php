@@ -69,7 +69,7 @@ class ProjectService
     }
 
 
-     public function getDepartmentProjects(){
+    public function getDepartmentProjects(){
 
      $userDepartment = Auth::user()->departments()->first();
 
@@ -85,5 +85,20 @@ class ProjectService
         $assigned_project=Project::wherehas('projectAssignee',fn($q)=> $q->where('user_id',$user->id))->get();
         return $assigned_project;
 
+    }
+
+    public function getProjectDetails($id)
+    {
+        $project = Project::with([
+            'clients', 'sourceAccounts', 'financialDetails', 'departments',
+            'salespersons', 'workTypes', 'media', 'projectTransactions',
+            'projectAssignees', 'status', 'projectUpdates'
+        ])->find($id);
+        return $project;
+    }
+
+    public function findProject($id)
+    {
+        return Project::find($id);
     }
 }

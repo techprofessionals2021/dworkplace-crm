@@ -13,6 +13,8 @@ use App\Models\Project\Project;
 use App\Models\Project\ProjectDetails;
 use App\Models\Project\projectTransaction;
 use App\Services\Project\ProjectService;
+use App\Services\ProjectThread\ProjectThreadService;
+use App\Events\ProjectThreadCreated;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -22,10 +24,12 @@ class ProjectController extends Controller
     use UserHelper;
 
     protected $projectService;
+    protected $projectThreadService;
 
-    public function __construct(ProjectService $projectService)
+    public function __construct(ProjectService $projectService, ProjectThreadService $projectThreadService)
     {
         $this->projectService = $projectService;
+        $this->projectThreadService = $projectThreadService;
     }
 
     /**
@@ -83,7 +87,12 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-
+        $project = $this->projectService->getProjectDetails($id);
+        if($project){
+            return ResponseHelper::success($project, "projectDetailResource Fetched Successfully", Response::HTTP_OK);
+        } else {
+            return ResponseHelper::error('Project Not Found', Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
@@ -156,7 +165,8 @@ class ProjectController extends Controller
     public function createThread(ThreadRequest $request)
     {
         $threadData = $request->validated();
-        $thread = $this->projectService->createThreadMessage($threadData);
+        $thread = $this->projectThreadService->createThreadMessage($threadData);
+        broadcast(new ProjectThreadCreated($thread))->toOthers();
 
         return ResponseHelper::success($thread, "Project Thread Created successfully", Response::HTTP_OK);
     }

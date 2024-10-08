@@ -6,6 +6,7 @@ use App\Models\Project\Departmentable;
 use App\Models\Project\ProjectDetails;
 use App\Models\Project\ProjectThread;
 use App\Models\Project\ProjectWorkType;
+use App\Models\ProjectUpdate\ProjectUpdate;
 use App\Models\ProjectAssignee\ProjectAssignee;
 use App\Models\Project\ProjectWorkTypeValue;
 use App\Models\User;
@@ -72,5 +73,9 @@ trait ProjectRelationship
 
     public function projectThreads(){
         return $this->morphMany(ProjectThread::class, 'threadable');
+    }
+
+    public function projectUpdates(){
+        return $this->morphMany(ProjectUpdate::class, 'projectable');
     }
 }

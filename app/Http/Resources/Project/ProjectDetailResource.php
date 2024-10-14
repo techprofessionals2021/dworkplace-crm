@@ -21,6 +21,7 @@ class ProjectDetailResource extends JsonResource
             'project_assignees' => $this->projectAssignees->pluck('user_id'),
             'project_transactions' => $this->getTransactions(),
             'project_attachments' => $this->getAttachments(),
+            'project_threads' => $this->getThreads(),
         ];
     }
 
@@ -84,6 +85,16 @@ class ProjectDetailResource extends JsonResource
         return $this->getMedia('attachments')->map(fn($media) => [
             'file_name' => $media->file_name,
             'url' => $media->getUrl(),
+        ])->toArray();
+    }
+
+    private function getThreads(): array
+    {
+        return $this->projectThreads->map(fn($thread) => [
+            'user_id' => $thread->user_id,
+            // 'user_name' => $thread->user->name,
+            'message' => $thread->message,
+            'created_at'=> $thread->created_at
         ])->toArray();
     }
 }

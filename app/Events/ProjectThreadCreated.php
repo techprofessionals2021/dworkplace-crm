@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Project\Project;
 use App\Models\Project\ProjectThread;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -11,10 +12,11 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ProjectThreadCreated
+class ProjectThreadCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $projectThread;
+    public $type;
 
     /**
      * Create a new event instance.
@@ -22,6 +24,10 @@ class ProjectThreadCreated
     public function __construct(ProjectThread $projectThread)
     {
         $this->projectThread = $projectThread;
+        if ($projectThread->threadable_type == Project::class) {
+            $this->type = 'project';
+        }
+
     }
 
     /**
@@ -32,8 +38,13 @@ class ProjectThreadCreated
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('thread.' . $this->projectThread->threadable_type . '.' . $this->projectThread->threadable_id)
+            'thread'
         ];
+    }
+
+    public function broadcastAs()
+    {
+        return $this->type.'.'.$this->projectThread->threadable_id;
     }
 
     public function broadcastWith()

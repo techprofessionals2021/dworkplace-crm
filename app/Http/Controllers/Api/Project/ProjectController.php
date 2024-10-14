@@ -67,7 +67,6 @@ class ProjectController extends Controller
     {
         //
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -81,7 +80,6 @@ class ProjectController extends Controller
         return ResponseHelper::success($formatedResponse, 'Project created successfully!',Response::HTTP_CREATED);
         //
     }
-
     /**
      * Display the specified resource.
      */

@@ -92,7 +92,9 @@ class ProjectService
         $project = Project::with([
             'clients', 'sourceAccounts', 'financialDetails', 'departments',
             'salespersons', 'workTypes', 'media', 'projectTransactions',
-            'projectAssignees', 'status', 'projectUpdates', 'projectThreads'
+            'projectAssignees', 'status', 'projectUpdates', 'projectThreads',
+            'creator'
+
         ])->find($id);
 
 

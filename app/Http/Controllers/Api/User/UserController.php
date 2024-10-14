@@ -8,6 +8,7 @@ use App\Http\Requests\User\UpdateRequest;
 use App\Http\Resources\User\UserResource;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
+use  App\Models\User;
 
 class UserController extends Controller
 {
@@ -91,4 +92,19 @@ class UserController extends Controller
 
         return ResponseHelper::success($user, 'User status updated successfully');
     }
-}
+
+
+    public function getDepartmentUser(Request $request)
+   {
+    $ids = $request->input('id');
+
+    if (!is_array($ids)) {
+        $ids = [$ids];
+    }
+    $users = User::whereHas('departments', function($query) use ($ids) {
+        $query->whereIn('department_id', $ids);
+    })->get();
+
+    return ResponseHelper::success($users, 'department User has successfully fetched');
+   }
+  }

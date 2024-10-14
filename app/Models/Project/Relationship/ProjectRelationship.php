@@ -78,4 +78,9 @@ trait ProjectRelationship
     public function projectUpdates(){
         return $this->morphMany(ProjectUpdate::class, 'projectable');
     }
+    
+     public function creator()
+     {
+         return $this->belongsTo(User::class, 'creator_id');
+     }
 }

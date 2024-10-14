@@ -89,7 +89,9 @@ class ProjectController extends Controller
     {
         $project = $this->projectService->getProjectDetails($id);
         if($project){
-            return ResponseHelper::success($project, "projectDetailResource Fetched Successfully", Response::HTTP_OK);
+            $projectDetailResource =  new ProjectDetailResource($project);
+            // dd($projectDetailResource);
+            return ResponseHelper::success($projectDetailResource, "projectDetailResource Fetched Successfully", Response::HTTP_OK);
         } else {
             return ResponseHelper::error('Project Not Found', Response::HTTP_NOT_FOUND);
         }

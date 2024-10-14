@@ -35,7 +35,7 @@ class AuthController extends Controller
         // $project = Project::find(1);
         
         // broadcast(new ProjectUpdated($project));
-        $users->notify(new UserCreatedNotification($user));
+        // $users->notify(new UserCreatedNotification($user));
         // foreach ($users as $singleUser) {
         // }
     

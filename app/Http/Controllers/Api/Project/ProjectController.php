@@ -62,7 +62,6 @@ class ProjectController extends Controller
     {
         //
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -76,7 +75,6 @@ class ProjectController extends Controller
         return ResponseHelper::success($formatedResponse, 'Project created successfully!',Response::HTTP_CREATED);
         //
     }
-
     /**
      * Display the specified resource.
      */
@@ -86,7 +84,7 @@ class ProjectController extends Controller
         $project = Project::with([
             'clients', 'sourceAccounts', 'financialDetails', 'departments',
             'salespersons', 'workTypes', 'media', 'projectTransactions',
-            'projectAssignees', 'status'
+            'projectAssignees', 'status','creator'
         ])->findOrFail($id);
 
           $projectDetailResource =  new ProjectDetailResource($project);
@@ -146,9 +144,4 @@ class ProjectController extends Controller
       }
 
     }
-
-
-
-
-
 }

@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('update-user-status/{id}', [UserController::class, 'updateStatus']);
 
     Route::apiResource('users', UserController::class);
+    Route::post('department/users', [UserController::class,'getDepartmentUser']);
     Route::apiResource('role', RoleController::class);
     //Route::apiResource('permissions', AssignPermissionController::class)->only(['index', 'store', 'update']);
 
@@ -84,7 +85,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('project/work-types',[ProjectController::class,'getProjectWorkTypes']);
     Route::get('get-sales-persons',[ProjectController::class,'getSalesPersons']);
     Route::post('project/{id}/upload-attachments',[ProjectController::class,'uploadAttachments']);
-   
+
 
 
     Route::apiResource('project-transaction',ProjectTransactionController::class);

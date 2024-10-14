@@ -18,12 +18,12 @@ class ProjectDetailResource extends JsonResource
             'project_info' => $this->getProjectInfo(),
             'project_financial_details' => $this->getFinancialDetails(),
             'project_description' => $this->description,
-            'project_assignees' => $this->projectAssignees->pluck('user_id'),
+            'project_assignees' => $this->getProjectAssigneesWithRoles(),
             'project_transactions' => $this->getTransactions(),
             'project_attachments' => $this->getAttachments(),
         ];
     }
-
+ 
     /**
      * Get project information.
      *
@@ -38,7 +38,11 @@ class ProjectDetailResource extends JsonResource
             'sales_code' => $this->sales_code,
             'client' => optional($this->clients)->name ?? 'N/A',
             'source_account' => optional($this->sourceAccounts)->name ?? 'N/A',
-            'created_at' => $this->created_at,
+            'platform'=> optional($this->sourceAccounts)->brand->name??'N/A',
+            'sales_persons' => $this->salespersons->pluck('name'),
+            'departments' => $this->getDepartment(),
+            'created_at' => $this->created_at->format('Y-m-d'),
+            'created_by' =>$this->creator->name,
             'status' => optional($this->status)->name ?? 'Unknown',
             'deadline' => $this->deadline,
         ];
@@ -68,11 +72,17 @@ class ProjectDetailResource extends JsonResource
     private function getTransactions(): array
     {
         return $this->projectTransactions->map(fn($transaction) => [
+            'id' =>$transaction->id,
             'amount' => $transaction->amount,
             'date' => $transaction->date,
+            'payment_method_id'=>$transaction->payment_method_id,
             'payment_method' => optional($transaction->paymentMethod)->name ?? 'N/A',
+             'currency_id'=>$transaction->currency_id,
+            'currency' =>optional($transaction->currency)->symbol?? 'N/A',
+            'created_by'=>optional($transaction->user)->name?? 'N/A',
         ])->toArray();
     }
+
 
     /**
      * Get project attachments.
@@ -83,7 +93,29 @@ class ProjectDetailResource extends JsonResource
     {
         return $this->getMedia('attachments')->map(fn($media) => [
             'file_name' => $media->file_name,
-            'url' => $media->getUrl(),
+            'url' => $media->getFullUrl(),
         ])->toArray();
     }
+
+    private function getProjectAssigneesWithRoles()
+{
+    return $this->projectAssignees->map(function ($assignee) {
+        $user = $assignee->user;
+        $roles = $user->roles->pluck('name'); // Assuming the 'name' column in roles table
+
+        return [
+            'user_id' => $user->id,
+            'user_name' => $user->name,
+            'roles' => $roles, // List of role names
+        ];
+    });
+}
+private function getDepartment() {
+    return $this->departments->map(function($proj) {
+        return [
+            'department_id' => $proj->id,
+            'department_name' => $proj->name
+        ];
+    });
+}
 }

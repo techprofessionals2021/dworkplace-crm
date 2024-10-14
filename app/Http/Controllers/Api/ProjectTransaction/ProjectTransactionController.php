@@ -9,6 +9,7 @@ use App\Services\ProjectTransaction\ProjectTransactionService;
 use App\Http\Requests\ProjectTransaction\StoreRequest;
 use Illuminate\Http\Response;
 use App\Helpers\Response\ResponseHelper;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectTransactionController extends Controller
 {
@@ -44,12 +45,17 @@ class ProjectTransactionController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreRequest $request)
-{
+    {
+    $userId = Auth::id();
 
-    $validatedData=$request->validated();
+    $request->merge(['user_id' => $userId]);
+    $request->merge(['projectable_type' => "App\\Models\\Project\\Project"]);
+
+    $validatedData=$request->all();
+
     $projectTransaction=$this->projectTransactionService->createTransaction($validatedData);
     return ResponseHelper::success($projectTransaction, Response::HTTP_OK);
-    
+
 }
 
     /**
@@ -74,7 +80,11 @@ class ProjectTransactionController extends Controller
     public function update(StoreRequest $request, string $id)
     {
 
-        $validated=$request->validated();
+        $userId = Auth::id();
+        $request->merge(['user_id' => $userId]);
+        $request->merge(['projectable_type' => "App\\Models\\Project\\Project"]);
+        $validated=$request->all();
+
         $transaction = $this->projectTransactionService->updateProjectTransaction($id, $validated);
         if (!$transaction) {
             return ResponseHelper::error('Transaction Not Found', Response::HTTP_NOT_FOUND);

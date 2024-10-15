@@ -4,10 +4,11 @@ namespace App\Models\ProjectAssignee;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProjectAssignee\Relationship\ProjectAssigneeRelationship;
 
 class ProjectAssignee extends Model
 {
-    use HasFactory;
+    use HasFactory, ProjectAssigneeRelationship;
     protected $fillable=[
 
         'user_id',
@@ -15,10 +16,5 @@ class ProjectAssignee extends Model
         'projectable_type',
         'assigned_by'
     ];
-    public function projectable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
 
 }

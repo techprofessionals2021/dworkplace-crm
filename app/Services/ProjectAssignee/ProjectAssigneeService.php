@@ -7,7 +7,7 @@ class ProjectAssigneeService
 {
 
     public function AssignProject($data){
-        $project_assignee =ProjectAssignee::create($data);
+        $project_assignee = ProjectAssignee::create($data);
         return $project_assignee;
     }
 }

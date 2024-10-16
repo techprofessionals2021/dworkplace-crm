@@ -20,6 +20,10 @@ class Project extends Model implements HasMedia
         'client_id', 'source_account_id', 'status_id', 'deadline',
     ];
 
+    protected $casts = [
+        'status_changed_at' => 'datetime',
+    ];
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

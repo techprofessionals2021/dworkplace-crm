@@ -101,6 +101,19 @@ class ProjectService
         return $project;
     }
 
+    public function updateProjectStatus($data, $id){
+        $project = Project::find($id);
+        if(!$project){
+            return null;
+        }
+        else{
+            $project->status_id = $data["status_id"];
+            $project->status_changed_at = now();
+            $project->save();
+            return $project;
+        }
+    }
+
     public function findProject($id)
     {
         return Project::find($id);

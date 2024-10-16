@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Project;
 use App\Helpers\Response\ResponseHelper;
 use App\Helpers\Traits\UserHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\project\StoreRequest;
 use App\Http\Requests\project\ThreadRequest;
 use App\Http\Resources\Project\ProjectResource;
@@ -169,6 +170,20 @@ class ProjectController extends Controller
         broadcast(new ProjectThreadCreated($thread))->toOthers();
 
         return ResponseHelper::success($thread, "Project Thread Created successfully", Response::HTTP_OK);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status_id' => 'required|exists:statuses,id'
+        ]);
+        $data = $validator->validated();
+        $projectStatus = $this->projectService->updateProjectStatus($data, $id);
+        if(!$projectStatus){
+            return ResponseHelper::error('Project Not Found', Response::HTTP_NOT_FOUND);
+        } else {
+            return ResponseHelper::success($projectStatus, "Project Status updated successfully", Response::HTTP_OK);
+        }
     }
 
 }

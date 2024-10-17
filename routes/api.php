@@ -56,7 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //Route::apiResource('permissions', AssignPermissionController::class)->only(['index', 'store', 'update']);
 
      Route::apiResource('role', RoleController::class)->only(['index', 'store', 'update']);
-
+     Route::get('role-permissions', [RoleController::class, 'getRolePermissions']);
      Route::get('roles/{role}/permissions', [RoleController::class, 'getPermissions']);
 
      Route::apiResource('permission', AssignPermissionController::class)->only(['index', 'store', 'update']);

@@ -94,4 +94,10 @@ class RoleController extends Controller
     {
         //
     }
+
+    public function getRolePermissions()
+    {
+        $rolePermission = $this->roleService->getRolePermissions();
+        return ResponseHelper::success($rolePermission, 'Role Permission Fetched Successfully');
+    }
 }

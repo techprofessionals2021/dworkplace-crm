@@ -109,7 +109,13 @@ class ProjectController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $projectData = $request->all();
+        $result = $this->projectService->updateProject($projectData, $id);
+        if(!$result){
+            return ResponseHelper::error('Project Not Found', Response::HTTP_NOT_FOUND);
+        } else {
+
+        }
     }
 
     /**

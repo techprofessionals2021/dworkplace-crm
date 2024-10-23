@@ -114,7 +114,7 @@ class ProjectController extends Controller
         if(!$result){
             return ResponseHelper::error('Project Not Found', Response::HTTP_NOT_FOUND);
         } else {
-            $formatedResponse = new ProjectResource($result->getProject());dd($formatedResponse);
+            $formatedResponse = new ProjectResource($result->getProject());
             return ResponseHelper::success($formatedResponse, 'Project Updated successfully!',Response::HTTP_OK);
         }
     }

@@ -116,12 +116,12 @@ class ProjectService
 
     public function updateProject($projectData, $id)
     {
-        $project = $this->findProject($id);
+        $project = $this->projectRepository->find($id);
         if(!$project){
             return null;
         } else {
-            return DB::transaction(function () use ($projectData, $projectId, $project) {
-                $project->update($projectData['general']) // Update general details
+            return DB::transaction(function () use ($projectData, $id, $project) {
+                $project = $this->projectRepository->update($projectData['general']) // Update general details
                     ->updateFinancialDetails($projectData['financial']) // Update financial details
                     ->updateDepartments($projectData['other']['departments']) // Update departments
                     ->updateSalespersons($projectData['other']['salespersons']) // Update salespersons

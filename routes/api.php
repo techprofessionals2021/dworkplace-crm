@@ -92,6 +92,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('project-detail/{id}',[ProjectController::class,'getProjectDetail']);
     Route::post('create-thread', [ProjectController::class, 'createThread']);
     Route::put('projects/update-status/{id}', [ProjectController::class, 'updateStatus']);
+    Route::post('project/{id}/update-attachments',[ProjectController::class,'updateAttachment']);
 
 
     Route::apiResource('project-transaction',ProjectTransactionController::class);

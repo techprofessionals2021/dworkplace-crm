@@ -193,4 +193,23 @@ class ProjectController extends Controller
         }
     }
 
+    public function updateAttachment(Request $request,$id){
+        $project = Project::find($id);
+
+        if ($project) {
+            // Step 1: Clear existing attachments
+            $project->clearMediaCollection('attachments');
+
+            // Step 2: Add new attachments
+            foreach ($request->attachments as $attachment) {
+                $project->addMedia($attachment)->toMediaCollection('attachments');
+            }
+
+            // Step 3: Return a successful response
+            return ResponseHelper::success([], 'Attachments updated successfully');
+        }
+
+        return ResponseHelper::error('Project not found', 404);
+    }
+
 }

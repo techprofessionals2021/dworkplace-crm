@@ -12,7 +12,6 @@ use App\Http\Resources\Project\ProjectResource;
 use App\Http\Resources\project\ProjectDetailResource;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectDetails;
-use App\Models\Project\projectTransaction;
 use App\Services\Project\ProjectService;
 use App\Services\ProjectThread\ProjectThreadService;
 use App\Events\ProjectThreadCreated;

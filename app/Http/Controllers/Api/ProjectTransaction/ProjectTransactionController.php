@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\ProjectTransaction;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Project\projectTransaction;
 use App\Services\ProjectTransaction\ProjectTransactionService;
 use App\Http\Requests\ProjectTransaction\StoreRequest;
 use Illuminate\Http\Response;

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\project\StoreRequest;
 use App\Http\Requests\project\ThreadRequest;
 use App\Http\Resources\Project\ProjectResource;
-use App\Http\Resources\project\ProjectDetailResource;
+use App\Http\Resources\Project\ProjectDetailResource;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectDetails;
 use App\Services\Project\ProjectService;

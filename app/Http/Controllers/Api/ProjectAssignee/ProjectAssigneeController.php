@@ -41,12 +41,12 @@ class ProjectAssigneeController extends Controller
      */
     public function store(StoreRequest $request)
     {
-
         $validate=$request->validated();
         $project_assignee =  $this->projectAssigneeService->AssignProject($validate);
 
         return ResponseHelper::success($project_assignee, 'Project has been assigned successfully');
     }
+
 
     /**
      * Display the specified resource

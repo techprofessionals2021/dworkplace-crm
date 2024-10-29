@@ -23,10 +23,10 @@ class StoreRequest extends FormRequest
     {
         return [
 
-        'projectable_id'      => 'required|integer',
+        'project_id'      => 'required|integer',
         'projectable_type'    => 'required|string',
-        'user_id'             => 'required|integer',
-        
+        'user_ids'            => 'required|array',
+       
 
         ];
     }

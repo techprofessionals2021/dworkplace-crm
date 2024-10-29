@@ -24,7 +24,7 @@ class ProjectDetailResource extends JsonResource
             'project_threads' => $this->getThreads(),
         ];
     }
- 
+
     /**
      * Get project information.
      *
@@ -38,9 +38,12 @@ class ProjectDetailResource extends JsonResource
             'project_code' => $this->project_code,
             'sales_code' => $this->sales_code,
             'client' => optional($this->clients)->name ?? 'N/A',
-            'source_account' => optional($this->sourceAccounts)->name ?? 'N/A',
+            'client_id' => optional($this->clients)->id ?? null,
+            'client_name' => optional($this->clients)->name ?? 'N/A',
+            'source_account_id' => optional($this->sourceAccounts)->id ?? 'N/A',
+            'source_account_name' => optional($this->sourceAccounts)->name ?? 'N/A',
             'platform'=> optional($this->sourceAccounts)->brand->name??'N/A',
-            'sales_persons' => $this->salespersons->pluck('name'),
+            'sales_persons' => $this->salespersons->pluck('id'),
             'departments' => $this->getDepartment(),
             'created_at' => $this->created_at->format('Y-m-d'),
             'created_by' =>$this->creator->name,
@@ -62,6 +65,9 @@ class ProjectDetailResource extends JsonResource
             'remaining_amount' => $this->financialDetails->remaining_amount,
             'priority' => $this->financialDetails->priority,
             'payment_type' => $this->financialDetails->payment_type,
+            'currency_id'=>$this->financialDetails->currency_id,
+
+
         ];
     }
 
@@ -78,7 +84,7 @@ class ProjectDetailResource extends JsonResource
             'date' => $transaction->date,
             'payment_method_id'=>$transaction->payment_method_id,
             'payment_method' => optional($transaction->paymentMethod)->name ?? 'N/A',
-             'currency_id'=>$transaction->currency_id,
+            'currency_id'=>$transaction->currency_id,
             'currency' =>optional($transaction->currency)->symbol?? 'N/A',
             'created_by'=>optional($transaction->user)->name?? 'N/A',
         ])->toArray();
@@ -128,4 +134,8 @@ private function getDepartment() {
         ];
     });
 }
+
+
+
+
 }

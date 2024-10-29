@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Project;
 use App\Helpers\Response\ResponseHelper;
 use App\Helpers\Traits\UserHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\project\StoreRequest;
 use App\Http\Requests\project\ThreadRequest;
 use App\Http\Resources\Project\ProjectResource;
@@ -108,7 +109,14 @@ class ProjectController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $projectData = $request->all();
+        $result = $this->projectService->updateProject($projectData, $id);
+        if(!$result){
+            return ResponseHelper::error('Project Not Found', Response::HTTP_NOT_FOUND);
+        } else {
+            $formatedResponse = new ProjectResource($result->getProject());
+            return ResponseHelper::success($formatedResponse, 'Project Updated successfully!',Response::HTTP_OK);
+        }
     }
 
     /**
@@ -169,6 +177,39 @@ class ProjectController extends Controller
         broadcast(new ProjectThreadCreated($thread))->toOthers();
 
         return ResponseHelper::success($thread, "Project Thread Created successfully", Response::HTTP_OK);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status_id' => 'required|exists:statuses,id'
+        ]);
+        $data = $validator->validated();
+        $projectStatus = $this->projectService->updateProjectStatus($data, $id);
+        if(!$projectStatus){
+            return ResponseHelper::error('Project Not Found', Response::HTTP_NOT_FOUND);
+        } else {
+            return ResponseHelper::success($projectStatus, "Project Status updated successfully", Response::HTTP_OK);
+        }
+    }
+
+    public function updateAttachment(Request $request,$id){
+        $project = Project::find($id);
+
+        if ($project) {
+            // Step 1: Clear existing attachments
+            $project->clearMediaCollection('attachments');
+
+            // Step 2: Add new attachments
+            foreach ($request->attachments as $attachment) {
+                $project->addMedia($attachment)->toMediaCollection('attachments');
+            }
+
+            // Step 3: Return a successful response
+            return ResponseHelper::success([], 'Attachments updated successfully');
+        }
+
+        return ResponseHelper::error('Project not found', 404);
     }
 
 }

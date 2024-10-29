@@ -55,7 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //Route::apiResource('permissions', AssignPermissionController::class)->only(['index', 'store', 'update']);
 
      Route::apiResource('role', RoleController::class)->only(['index', 'store', 'update']);
-
+     Route::get('role-permissions', [RoleController::class, 'getRolePermissions']);
      Route::get('roles/{role}/permissions', [RoleController::class, 'getPermissions']);
 
      Route::apiResource('permission', AssignPermissionController::class)->only(['index', 'store', 'update']);
@@ -90,6 +90,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('project/{id}/upload-attachments',[ProjectController::class,'uploadAttachments']);
     Route::get('project-detail/{id}',[ProjectController::class,'getProjectDetail']);
     Route::post('create-thread', [ProjectController::class, 'createThread']);
+    Route::put('projects/update-status/{id}', [ProjectController::class, 'updateStatus']);
+    Route::post('project/{id}/update-attachments',[ProjectController::class,'updateAttachment']);
 
 
     Route::apiResource('project-transaction',ProjectTransactionController::class);

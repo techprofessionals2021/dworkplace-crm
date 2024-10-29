@@ -38,4 +38,14 @@ class RoleService
 
         return $roleWithPermissions;
     }
+
+    public function getRolePermissions()
+    {
+        return Role::with('permissions:id')->get()->map(function ($role) {
+            return (object) [
+                'role_id' => $role->id,
+                'permission_ids' => $role->permissions->pluck('id')->toArray(),
+            ];
+        })->values()->toArray();
+    }
 }

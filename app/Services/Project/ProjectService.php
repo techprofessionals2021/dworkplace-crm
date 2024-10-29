@@ -101,6 +101,37 @@ class ProjectService
         return $project;
     }
 
+    public function updateProjectStatus($data, $id){
+        $project = $this->findProject($id);
+        if(!$project){
+            return null;
+        }
+        else{
+            $project->status_id = $data["status_id"];
+            $project->status_changed_at = now();
+            $project->save();
+            return $project;
+        }
+    }
+
+    public function updateProject($projectData, $id)
+    {
+        $project = $this->projectRepository->find($id);
+        if(!$project){
+            return null;
+        } else {
+            return DB::transaction(function () use ($projectData, $id, $project) {
+                $project = $this->projectRepository->update($projectData['general']) // Update general details
+                    ->updateFinancialDetails($projectData['financial']) // Update financial details
+                    ->updateDepartments($projectData['other']['departments']) // Update departments
+                    ->updateSalespersons($projectData['other']['salespersons']) // Update salespersons
+                    ->updateWorkTypes($projectData['work_types']); // Update work types
+
+                return $project;
+            });
+        }
+    }
+
     public function findProject($id)
     {
         return Project::find($id);

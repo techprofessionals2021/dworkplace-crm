@@ -13,7 +13,7 @@ use App\Models\User;
 use App\Models\SourceAccount\SourceAccount;
 use App\Models\Client\Client;
 use App\Models\Status\Status;
-use App\Models\Project\projectTransaction;
+use App\Models\Project\ProjectTransaction;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 

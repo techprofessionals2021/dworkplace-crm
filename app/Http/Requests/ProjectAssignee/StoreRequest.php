@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
         'projectable_id'      => 'required|integer',
         'projectable_type'    => 'required|string',
         'user_id'             => 'required|integer',
-        'assigned_by'         => 'required|integer',
+        
 
         ];
     }

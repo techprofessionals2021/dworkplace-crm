@@ -3,15 +3,38 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Department\Department;
+use App\Models\Permission\Permission;
+use App\Models\Role\Role;
+use App\Models\Status\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Activitylog\Traits\LogsActivity;
+
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use LogsActivity, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+
+    
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            // Specify the attributes you want to log
+            ->logOnly(['name', 'email', 'role'])
+            ->logOnlyDirty()
+            ->useLogName('user')
+            ->setDescriptionForEvent(fn(string $eventName) => "User {$eventName} by " . auth()->user()->name);
+    }
+
+    
 
     /**
      * The attributes that are mass assignable.
@@ -57,14 +80,33 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'user_roles');
     }
 
-    public function permissions()
+    public function getPermissions()
     {
-        return $this->belongsToMany(Permission::class, 'role_permissions', 'role_id', 'permission_id');
+        return Permission::join('role_permissions', 'permissions.id', '=', 'role_permissions.permission_id')
+            ->join('roles', 'role_permissions.role_id', '=', 'roles.id')
+            ->whereIn('roles.id', $this->roles->pluck('id'))
+            ->select('permissions.*')
+            ->get();
     }
 
     public function departments()
     {
-        return $this->belongsToMany(UserDepartment::class, 'user_departments', 'user_id', 'department_id');
+        return $this->belongsToMany(Department::class, 'user_departments', 'user_id', 'department_id');
     }
 
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
+    }
+
+
+    public function getDepartmentPermissions()
+    {
+        return Permission::join('role_permission_departments', 'permissions.id', '=', 'role_permission_departments.permission_id')
+            ->join('roles', 'role_permission_departments.role_id', '=', 'roles.id')
+            ->whereIn('roles.id', $this->roles->pluck('id'))
+            ->whereIn('role_permission_departments.department_id', $this->departments->pluck('id'))
+            ->select('permissions.*')
+            ->get();
+    }
 }

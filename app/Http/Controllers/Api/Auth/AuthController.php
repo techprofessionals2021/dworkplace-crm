@@ -11,6 +11,8 @@ use App\Models\User;
 use Hash;
 use Illuminate\Http\JsonResponse;
 use App\Helpers\Response\ResponseHelper;
+use App\Models\Project\Project;
+use App\Notifications\User\UserCreatedNotification;
 use App\Services\Auth\AuthService;
 use Illuminate\Support\Facades\Password;
 
@@ -28,10 +30,20 @@ class AuthController extends Controller
         $user = $this->authService->register($request->validated());
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        $users = auth()->user();
+
+        // $project = Project::find(1);
+        
+        // broadcast(new ProjectUpdated($project));
+        // $users->notify(new UserCreatedNotification($user));
+        // foreach ($users as $singleUser) {
+        // }
+    
+
         return ResponseHelper::success([
             'user' => $user,
-            // 'bearer_token' => $token,
-            // 'token_type' => 'Bearer'
+            'bearer_token' => $token,
+            'token_type' => 'Bearer'
         ], 'User created successfully');
     }
 

@@ -23,8 +23,11 @@ class ProjectObserver
      */
     public function created(Project $project): void
     {
+
+        $clientProjects = Project::where('client_id', $project->client_id)->orderBy('id')->get();
+        $projectId = $clientProjects->count() > 1 ? $clientProjects->first()->id : $project->id;
         // Update project_code after the project is saved to have the correct project_id
-        $project->project_code = 'PR-' . $project->id . '.' . Project::where('client_id', $project->client_id)->count();
+        $project->project_code = 'PR-' . $projectId . '.' . $clientProjects->count();
         $project->save(); // Save the updated project_code
     }
 

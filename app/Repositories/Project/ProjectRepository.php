@@ -123,6 +123,7 @@ class ProjectRepository
 
     public function update(array $data): self
     {
+        $data['creator_id'] = auth()->id();
         $this->project->update($data);
         return $this;
     }

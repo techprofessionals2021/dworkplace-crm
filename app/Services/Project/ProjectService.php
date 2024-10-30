@@ -7,9 +7,11 @@ use App\Models\User;
 use App\Models\Project\project;
 use App\Models\WorkType\WorkType;
 use App\Repositories\Project\ProjectRepository as ProjectProjectRepository;
+use Illuminate\Support\Facades\Notification;
 use App\Repositories\ProjectRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\ProjectUpdatedNotification;
 use App\Models\Department\Department;
 
 class ProjectService
@@ -92,7 +94,7 @@ class ProjectService
         $project = Project::with([
             'clients', 'sourceAccounts', 'financialDetails', 'departments',
             'salespersons', 'workTypes', 'media', 'projectTransactions',
-            'projectAssignees', 'status', 'projectUpdates', 'projectThreads',
+            'status', 'projectUpdates', 'projectThreads',
             'creator'
 
         ])->find($id);
@@ -126,6 +128,9 @@ class ProjectService
                     ->updateDepartments($projectData['other']['departments']) // Update departments
                     ->updateSalespersons($projectData['other']['salespersons']) // Update salespersons
                     ->updateWorkTypes($projectData['work_types']); // Update work types
+
+                $assignees = $project->projectAssignees;
+                Notification::send($assignees, new ProjectUpdatedNotification($project));
 
                 return $project;
             });

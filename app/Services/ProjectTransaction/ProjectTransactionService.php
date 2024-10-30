@@ -2,7 +2,7 @@
 
 namespace App\Services\ProjectTransaction;
 
-use App\Models\project\ProjectTransaction;
+use App\Models\Project\ProjectTransaction;
 class ProjectTransactionService
 {
   public function getAllProjectTansactions()

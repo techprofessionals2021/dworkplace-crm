@@ -12,6 +12,7 @@ class ProjectRepository
 
     public function create(array $data): self
     {
+        $data['creator_id'] = auth()->id();
         $this->project = Project::create($data);
         return $this;
     }

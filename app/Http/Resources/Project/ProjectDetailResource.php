@@ -46,7 +46,7 @@ class ProjectDetailResource extends JsonResource
             'sales_persons' => $this->salespersons->pluck('id'),
             'departments' => $this->getDepartment(),
             'created_at' => $this->created_at->format('Y-m-d'),
-            'created_by' =>$this->creator->name,
+            'created_by' =>@$this->creator->name,
             'status' => optional($this->status)->name ?? 'Unknown',
             'deadline' => $this->deadline,
         ];
@@ -114,18 +114,18 @@ class ProjectDetailResource extends JsonResource
         ])->toArray();
     }
     private function getProjectAssigneesWithRoles()
-{
-    return $this->projectAssignees->map(function ($assignee) {
-        $user = $assignee->user;
-        $roles = $user->roles->pluck('name'); // Assuming the 'name' column in roles table
+    {
+        return $this->assignees->map(function ($assignee) {
+            $user = $assignee;
+            $roles = $assignee->roles->pluck('name'); // Assuming the 'name' column in roles table
 
-        return [
-            'user_id' => $user->id,
-            'user_name' => $user->name,
-            'roles' => $roles, // List of role names
-        ];
-    });
-}
+            return [
+                'user_id' => @$user->id,
+                'user_name' => @$user->name,
+                'roles' => $roles, // List of role names
+            ];
+        });
+    }
 private function getDepartment() {
     return $this->departments->map(function($proj) {
         return [

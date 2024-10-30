@@ -15,7 +15,7 @@ use App\Models\Client\Client;
 use App\Models\Status\Status;
 use App\Models\Project\ProjectTransaction;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait ProjectRelationship
 {
@@ -56,9 +56,15 @@ trait ProjectRelationship
     {
         return $this->morphMany(ProjectTransaction::class, 'projectable');
     }
-    public function projectAssignees():MorphMany
+    // public function projectAssignees():MorphMany
+    // {
+    //     return $this->morphMany(ProjectAssignee::class,'projectable');
+    // }
+
+    public function assignees(): MorphToMany
     {
-        return $this->morphMany(ProjectAssignee::class,'projectable');
+        return $this->morphToMany(User::class, 'projectable', 'project_assignees')
+                    ->withPivot('assigned_by'); // Optional additional pivot fields
     }
     public function sourceAccounts()
     {

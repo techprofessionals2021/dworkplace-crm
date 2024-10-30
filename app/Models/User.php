@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Department\Department;
 use App\Models\Permission\Permission;
+use App\Models\Project\Project;
 use App\Models\Role\Role;
 use App\Models\Status\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -108,5 +109,11 @@ class User extends Authenticatable
             ->whereIn('role_permission_departments.department_id', $this->departments->pluck('id'))
             ->select('permissions.*')
             ->get();
+    }
+
+    public function assingedProjects() 
+    {
+        return $this->morphedByMany(Project::class, 'projectable', 'project_assignees')
+                    ->withPivot('assigned_by');
     }
 }

@@ -22,12 +22,9 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-        'projectable_id'      => 'required|integer',
-        'projectable_type'    => 'required|string',
-        'user_id'             => 'required|integer',
-        
-
+            'project_id'      => 'required',
+            'project_type'    => 'required|string',
+            'user_ids'        => 'required|array',
         ];
     }
 }

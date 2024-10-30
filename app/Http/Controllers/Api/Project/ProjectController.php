@@ -161,7 +161,7 @@ class ProjectController extends Controller
         $project = Project::with([
             'clients', 'sourceAccounts', 'financialDetails', 'departments',
             'salespersons', 'workTypes', 'media', 'projectTransactions',
-            'projectAssignees', 'status'
+            'status'
         ])->findOrFail($id);
 
         $projectDetailResource =  new ProjectDetailResource($project);

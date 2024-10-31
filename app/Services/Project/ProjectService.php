@@ -65,7 +65,7 @@ class ProjectService
 
     public function getAllProjects(){
 
-        return Project::all();
+        return Project::orderBy('id', 'desc')->get();
 
 
     }
@@ -129,8 +129,8 @@ class ProjectService
                     ->updateSalespersons($projectData['other']['salespersons']) // Update salespersons
                     ->updateWorkTypes($projectData['work_types']); // Update work types
 
-                $assignees = $project->projectAssignees;
-                Notification::send($assignees, new ProjectUpdatedNotification($project));
+                // $assignees = $project->assignees->pluck('id');
+                // Notification::send($assignees, new ProjectUpdatedNotification($project));
 
                 return $project;
             });

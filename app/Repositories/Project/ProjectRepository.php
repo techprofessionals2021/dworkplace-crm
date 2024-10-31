@@ -4,6 +4,8 @@ namespace App\Repositories\Project;
 
 use App\Models\Project\Project;
 use App\Models\Project\ProjectWorkType;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ProjectUpdatedNotification;
 use App\Models\Project\ProjectWorkTypeValue;
 
 class ProjectRepository
@@ -175,6 +177,14 @@ class ProjectRepository
 
         // Reload the work types relation
         $this->project->load('workTypes');
+        return $this;
+    }
+
+    public function sendProjectUpdateNotification() : self
+    {
+        $assignees = $this->project->assignees->pluck('id');
+        Notification::send($assignees, new ProjectUpdatedNotification($this->project));
+
         return $this;
     }
 }

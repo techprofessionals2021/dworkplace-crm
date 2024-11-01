@@ -51,6 +51,15 @@ class ProjectRepository
         $this->project->departments()->sync($departments);
         $this->project->load('departments');
 
+        $departManagers = $this->project->departments->pluck('manager_id')->toArray();
+        $assigneesWithPivotData = [];
+        foreach ($departManagers as $userId) {
+            $assigneesWithPivotData[$userId] = ['assigned_by' => auth()->id()];
+        }
+    
+        // Attach with pivot data
+        $this->project->assignees()->attach($assigneesWithPivotData);
+    
         // dd($pivotRecords = $this->project->departments->map(function ($department) {
         //     return [
         //         'department_id' => $department->id,

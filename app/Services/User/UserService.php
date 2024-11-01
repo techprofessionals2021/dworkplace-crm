@@ -53,4 +53,13 @@ class UserService
 
         return $user;
     }
+
+    public function updateUserPassword($data){
+        $user = User::find($data['user_id']);
+
+        $user->password = Hash::make($data['password']);
+        $user->save();
+
+        return $user;
+    }
 }

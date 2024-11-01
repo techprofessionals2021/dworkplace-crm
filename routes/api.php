@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('update-user-status/{id}', [UserController::class, 'updateStatus']);
 
     Route::apiResource('users', UserController::class);
+    Route::post('update-user-password', [UserController::class, 'updateUserPassword']);
     Route::post('department/users', [UserController::class,'getDepartmentUser']);
     Route::apiResource('role', RoleController::class);
     //Route::apiResource('permissions', AssignPermissionController::class)->only(['index', 'store', 'update']);

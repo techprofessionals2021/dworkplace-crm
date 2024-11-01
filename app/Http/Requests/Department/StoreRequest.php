@@ -24,10 +24,18 @@ class StoreRequest extends FormRequest
      */
     public function rules()
     {
+        $departmentId = $this->route('department') ?? $this->input('id');
+
         return [
             'manager_id' => 'nullable|exists:users,id',
             'parent_department_id' => 'nullable|exists:departments,id',
             'name' => 'required|string|max:255',
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+                'unique:departments,slug,' . $departmentId,
+            ],
             'description' => 'nullable|string',
             'status_id' => 'required|exists:statuses,id',
             'type' => 'required|in:department,team',

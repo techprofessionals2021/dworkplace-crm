@@ -107,4 +107,16 @@ class UserController extends Controller
 
     return ResponseHelper::success($users, 'department User has successfully fetched');
    }
+
+    public function updateUserPassword(Request $request)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'password' => 'required|min:8', // Ensure password is secure
+        ]);
+
+        $user = $this->userService->updateUserPassword($validatedData);
+
+        return ResponseHelper::success($user, 'User Password Updated Successfully');
+    }
   }

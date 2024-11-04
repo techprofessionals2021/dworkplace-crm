@@ -18,6 +18,7 @@ class Department extends Model
         'status_id',
         'type',
         'is_projectable',
+        'slug',
     ];
 
 

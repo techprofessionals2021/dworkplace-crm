@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Notification;
 use App\Repositories\ProjectRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\ProjectUpdatedNotification;
 use App\Models\Department\Department;
 
 class ProjectService
@@ -65,7 +64,7 @@ class ProjectService
 
     public function getAllProjects(){
 
-        return Project::all();
+        return Project::orderBy('id', 'desc')->get();
 
 
     }
@@ -127,10 +126,11 @@ class ProjectService
                     ->updateFinancialDetails($projectData['financial']) // Update financial details
                     ->updateDepartments($projectData['other']['departments']) // Update departments
                     ->updateSalespersons($projectData['other']['salespersons']) // Update salespersons
-                    ->updateWorkTypes($projectData['work_types']); // Update work types
+                    ->updateWorkTypes($projectData['work_types'])
+                    ->sendProjectUpdateNotification(); // Update work types
 
-                $assignees = $project->projectAssignees;
-                Notification::send($assignees, new ProjectUpdatedNotification($project));
+                // $assignees = $project->assignees->pluck('id');
+                // Notification::send($assignees, new ProjectUpdatedNotification($project));
 
                 return $project;
             });

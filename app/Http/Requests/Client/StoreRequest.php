@@ -21,11 +21,18 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $clientId = $this->route('client') ?? $this->input('id');
+
         return [
             'source_account_id' => 'nullable|exists:source_accounts,id',
             'name' => 'required|string|max:255',
-            'username' => 'nullable|string|max:255|unique:clients,username',
-            'email' => 'nullable|email|max:255',
+            'username' => [
+                'nullable',
+                'string',
+                'max:255',
+                'unique:clients,username,' . $clientId,
+            ],
+            'email' => ['nullable','email','max:255','unique:clients,email,' . $clientId,],
             'contact_no' => 'nullable|max:20',
         ];
     }

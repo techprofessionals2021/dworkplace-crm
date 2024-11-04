@@ -197,7 +197,7 @@ class ProjectController extends Controller
 
         if ($project) {
             // Step 1: Clear existing attachments
-            $project->clearMediaCollection('attachments');
+            // $project->clearMediaCollection('attachments');
 
             // Step 2: Add new attachments
             foreach ($request->attachments as $attachment) {

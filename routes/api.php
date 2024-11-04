@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\Brand\BrandController;
 use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ProjectAssignee\ProjectAssigneeController;
 use App\Http\Controllers\Api\ProjectUpdate\ProjectUpdateController;
+use App\Http\Controllers\Api\UserTarget\UserTargetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('update-user-status/{id}', [UserController::class, 'updateStatus']);
 
     Route::apiResource('users', UserController::class);
+    Route::post('update-user-password', [UserController::class, 'updateUserPassword']);
     Route::post('department/users', [UserController::class,'getDepartmentUser']);
     Route::apiResource('role', RoleController::class);
     //Route::apiResource('permissions', AssignPermissionController::class)->only(['index', 'store', 'update']);
@@ -98,6 +100,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('project-assignee',ProjectAssigneeController::class);
 
     Route::apiResource('project-update', ProjectUpdateController::class);
+
+    Route::apiResource('user-target', UserTargetController::class);
 
 
 });

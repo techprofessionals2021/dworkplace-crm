@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\Project\ProjectController;
 use App\Http\Controllers\Api\ProjectAssignee\ProjectAssigneeController;
 use App\Http\Controllers\Api\ProjectUpdate\ProjectUpdateController;
 use App\Http\Controllers\Api\UserTarget\UserTargetController;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,19 @@ use App\Http\Controllers\Api\UserTarget\UserTargetController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::get('/hash-password/{password}', function ($password) {
+    // Validate the password length
+    if (strlen($password) < 6) {
+        return response()->json(['error' => 'Password must be at least 6 characters long'], 400);
+    }
+
+    // Hash the password
+    $hashedPassword = Hash::make($password);
+
+    return response()->json(['hashed_password' => $hashedPassword]);
+});
+
 Route::post('login', [AuthController::class, 'login']);
 Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
@@ -50,7 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('update-user/{id}', [UserController::class, 'update']);
     Route::put('update-user-status/{id}', [UserController::class, 'updateStatus']);
     Route::patch('/user/{id}/profile', [UserController::class, 'updateProfile']);
-    Route::put('/user/{id}/profile-image', [UserController::class, 'updateProfileImage']);
+    Route::post('/user/{id}/profile-image', [UserController::class, 'updateProfileImage']);
 
     Route::apiResource('users', UserController::class);
     Route::post('update-user-password', [UserController::class, 'updateUserPassword']);

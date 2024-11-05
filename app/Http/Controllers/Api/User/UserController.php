@@ -135,6 +135,7 @@ class UserController extends Controller
 
     public function updateProfileImage(Request $request, string $id)
     {
+        // \Log::info($request->all());
         // dd($request->file('profile_image'));
         // Validate the incoming request for image upload
         $request->validate([

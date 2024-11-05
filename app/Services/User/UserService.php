@@ -74,12 +74,16 @@ class UserService
         // Find the user by ID
         $user = User::findOrFail($id);
 
+        // Remove the password from the data array to prevent fill from setting it to null
+        $password = isset($data['password']) ? $data['password'] : null;
+        unset($data['password']); // Ensure password is not filled as null
+
         // Update other attributes
         $user->fill($data);
 
         // Update the password only if it is provided
-        if (!empty($data['password'])) {
-            $user->password = Hash::make($data['password']);
+        if (!empty($password)) {
+            $user->password = Hash::make($password);
         }
 
         // Save the updated user profile

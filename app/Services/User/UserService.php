@@ -79,7 +79,7 @@ class UserService
 
         // Update the password only if it is provided
         if (!empty($data['password'])) {
-            $user->password = bcrypt($data['password']);
+            $user->password = Hash::make($data['password']);
         }
 
         // Save the updated user profile

@@ -62,4 +62,17 @@ class UserService
 
         return $user;
     }
+
+    public function storeDeviceToken($token, $id)
+    {
+        $user = User::find($id);
+        if(!$user){
+            return null;
+        }
+
+        $user->device_token = $token['device_token'];
+        $user->save();
+
+        return $user;
+    }
 }

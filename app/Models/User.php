@@ -24,7 +24,7 @@ class User extends Authenticatable
 {
     use LogsActivity, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-    
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -35,7 +35,7 @@ class User extends Authenticatable
             ->setDescriptionForEvent(fn(string $eventName) => "User {$eventName} by " . auth()->user()->name);
     }
 
-    
+
 
     /**
      * The attributes that are mass assignable.
@@ -48,6 +48,7 @@ class User extends Authenticatable
         'password',
         'contact',
         'status_id',
+        'device_token',
     ];
 
     /**
@@ -111,7 +112,7 @@ class User extends Authenticatable
             ->get();
     }
 
-    public function assingedProjects() 
+    public function assingedProjects()
     {
         return $this->morphedByMany(Project::class, 'projectable', 'project_assignees')
                     ->withPivot('assigned_by');

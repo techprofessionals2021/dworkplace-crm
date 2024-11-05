@@ -62,4 +62,29 @@ class UserService
 
         return $user;
     }
+
+    public function getUserDetails($id)
+    {
+        // Find the user by ID or throw a 404 error if not found
+        return User::findOrFail($id);
+    }
+
+    public function updateUserProfile($id, array $data)
+    {
+        // Find the user by ID
+        $user = User::findOrFail($id);
+
+        // Update other attributes
+        $user->fill($data);
+
+        // Update the password only if it is provided
+        if (!empty($data['password'])) {
+            $user->password = bcrypt($data['password']);
+        }
+
+        // Save the updated user profile
+        $user->save();
+
+        return $user;
+    }
 }

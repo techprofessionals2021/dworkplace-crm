@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'status' => "status_active",
             'roles'=> $this->roles()->pluck('name')->toArray(),
             'departments'=> $this->departments()->pluck('name')->toArray(),
+            'profile_image' => $this->getFirstMediaUrl('profile_images')
             // 'status' => new StatusResource($this->whenLoaded('status')), // if you want to include the status details
         ];
     }

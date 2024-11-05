@@ -62,4 +62,47 @@ class UserService
 
         return $user;
     }
+
+    public function getUserDetails($id)
+    {
+        // Find the user by ID or throw a 404 error if not found
+        return User::findOrFail($id);
+    }
+
+    public function updateUserProfile($id, array $data)
+    {
+        // Find the user by ID
+        $user = User::findOrFail($id);
+
+        // Remove the password from the data array to prevent fill from setting it to null
+        $password = isset($data['password']) ? $data['password'] : null;
+        unset($data['password']); // Ensure password is not filled as null
+
+        // Update other attributes
+        $user->fill($data);
+
+        // Update the password only if it is provided
+        if (!empty($password)) {
+            $user->password = Hash::make($password);
+        }
+
+        // Save the updated user profile
+        $user->save();
+
+        return $user;
+    }
+
+
+    public function updateProfileImage(User $user, $image)
+    {
+        // Clear old media (optional)
+        $user->clearMediaCollection('profile_images');
+
+        // Add new media
+        $user->addMedia($image)
+             ->preservingOriginal()
+             ->toMediaCollection('profile_images');
+
+        return $user;
+    }
 }

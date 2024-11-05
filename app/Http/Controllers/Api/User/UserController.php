@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Helpers\Response\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\User\UpdateUserProfileRequest;
 use App\Http\Resources\User\UserResource;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
@@ -49,7 +50,9 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = new UserResource($this->userService->getUserDetails($id));
+        return ResponseHelper::success($user, 'User retrieved successfully');
+
     }
 
     /**
@@ -118,5 +121,34 @@ class UserController extends Controller
         $user = $this->userService->updateUserPassword($validatedData);
 
         return ResponseHelper::success($user, 'User Password Updated Successfully');
+    }
+
+    public function updateProfile(UpdateUserProfileRequest $request, string $id)
+    {
+    
+        // Use the service to update the user profile
+        $user = $this->userService->updateUserProfile($id, $request->validated());
+
+        return ResponseHelper::success($user, 'User updated successfully');
+    }
+
+
+    public function updateProfileImage(Request $request, string $id)
+    {
+        // \Log::info($request->all());
+        // dd($request->file('profile_image'));
+        // Validate the incoming request for image upload
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+        ]);
+        // dd($request->all());
+
+        // Find the user
+        $user = $this->userService->getUserDetails($id);
+
+        // Call the service method to update the profile image
+        $this->userService->updateProfileImage($user, $request->file('profile_image'));
+
+        return ResponseHelper::success([], 'Profile image updated successfully!');
     }
   }

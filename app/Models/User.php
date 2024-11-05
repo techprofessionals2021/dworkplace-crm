@@ -19,10 +19,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use LogsActivity, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use LogsActivity, HasApiTokens, HasFactory, Notifiable, SoftDeletes, InteractsWithMedia;
 
     
     public function getActivitylogOptions(): LogOptions
@@ -34,6 +36,14 @@ class User extends Authenticatable
             ->useLogName('user')
             ->setDescriptionForEvent(fn(string $eventName) => "User {$eventName} by " . auth()->user()->name);
     }
+
+    
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('profile_images')
+             ->singleFile(); // Ensures only one image in the collection
+    }
+
 
     
 

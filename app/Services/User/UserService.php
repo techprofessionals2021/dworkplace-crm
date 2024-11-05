@@ -87,4 +87,18 @@ class UserService
 
         return $user;
     }
+
+
+    public function updateProfileImage(User $user, $image)
+    {
+        // Clear old media (optional)
+        $user->clearMediaCollection('profile_images');
+
+        // Add new media
+        $user->addMedia($image)
+             ->preservingOriginal()
+             ->toMediaCollection('profile_images');
+
+        return $user;
+    }
 }

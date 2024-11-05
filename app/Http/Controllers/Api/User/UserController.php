@@ -131,4 +131,23 @@ class UserController extends Controller
 
         return ResponseHelper::success($user, 'User updated successfully');
     }
+
+
+    public function updateProfileImage(Request $request, string $id)
+    {
+        // dd($request->file('profile_image'));
+        // Validate the incoming request for image upload
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+        ]);
+        // dd($request->all());
+
+        // Find the user
+        $user = $this->userService->getUserDetails($id);
+
+        // Call the service method to update the profile image
+        $this->userService->updateProfileImage($user, $request->file('profile_image'));
+
+        return ResponseHelper::success([], 'Profile image updated successfully!');
+    }
   }

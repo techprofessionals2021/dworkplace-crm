@@ -50,7 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('update-user/{id}', [UserController::class, 'update']);
     Route::put('update-user-status/{id}', [UserController::class, 'updateStatus']);
     Route::patch('/user/{id}/profile', [UserController::class, 'updateProfile']);
-
+    Route::put('/user/{id}/profile-image', [UserController::class, 'updateProfileImage']);
 
     Route::apiResource('users', UserController::class);
     Route::post('update-user-password', [UserController::class, 'updateUserPassword']);

@@ -10,6 +10,7 @@ class ProjectAssigneeService
 
     public function AssignProject($data)
     {
+
         $projectId = $data['project_id'];
         $newAssignees = $data['user_ids'];
         $projectType = $data['project_type'];

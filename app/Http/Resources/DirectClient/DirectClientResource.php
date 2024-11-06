@@ -18,7 +18,7 @@ class DirectClientResource extends JsonResource
             'id' => @$this->id,
             'name' => @$this->name,
             'email' => @$this->email,
-            'contact' => @$this->conact
+            'contact' => @$this->contact
         ];
     }
 }

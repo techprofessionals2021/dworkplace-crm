@@ -35,16 +35,24 @@ class SourceAccountService
         $sourceAccount->update($data);
         return $sourceAccount;
     }
+    
     public function deleteSourceAccount(string $id)
     {
         $sourceAccount = $this->getSourceAccountById($id);
-
+    
         if (!$sourceAccount) {
             return false;
         }
-
+    
+        // Check if the source account has any associated projects
+        if ($sourceAccount->projects()->exists()) {
+            return 'has_projects'; // Return a specific indicator if projects exist
+        }
+    
+        // Soft delete the source account
         return $sourceAccount->delete();
     }
+    
 
     
 }

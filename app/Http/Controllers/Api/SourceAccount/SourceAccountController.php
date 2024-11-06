@@ -50,15 +50,22 @@ class SourceAccountController extends Controller
      */
     public function destroy(string $id)
     {
-     
         $deleted = $this->sourceAccountService->deleteSourceAccount($id);
-
+    
+        if ($deleted === 'has_projects') {
+            return ResponseHelper::error(
+                'Cannot delete SourceAccount with associated projects',
+                Response::HTTP_CONFLICT
+            );
+        }
+    
         if (!$deleted) {
             return ResponseHelper::error('SourceAccount not found', Response::HTTP_NOT_FOUND);
         }
-
-        return ResponseHelper::success("SourceAccount deleted successfully",Response::HTTP_NO_CONTENT);
+    
+        return ResponseHelper::success("SourceAccount deleted successfully", Response::HTTP_NO_CONTENT);
     }
+    
 
     
     /**

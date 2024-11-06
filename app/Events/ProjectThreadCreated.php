@@ -52,6 +52,7 @@ class ProjectThreadCreated implements ShouldBroadcast
         return [
             'message' => $this->projectThread->message,
             'user_id' => $this->projectThread->user_id,
+            'user_name' => $this->projectThread->user->name,
             'threadable_type' => $this->projectThread->threadable_type,
             'threadable_id' => $this->projectThread->threadable_id,
             'created_at' => $this->projectThread->created_at->toDateTimeString(),

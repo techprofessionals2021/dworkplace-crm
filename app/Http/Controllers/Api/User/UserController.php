@@ -151,4 +151,19 @@ class UserController extends Controller
 
         return ResponseHelper::success([], 'Profile image updated successfully!');
     }
+    public function storeDeviceToken(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'device_token' => 'required|string',
+        ]);
+
+        $user = $this->userService->storeDeviceToken($validatedData, $id);
+
+        if(!$user)
+        {
+            return ResponseHelper::error('User Not Found', Response::HTTP_NOT_FOUND);
+        }
+        return ResponseHelper::success($user, 'Device Token Saved Successfully.');
+
+    }
   }

@@ -26,7 +26,7 @@ class User extends Authenticatable implements HasMedia
 {
     use LogsActivity, HasApiTokens, HasFactory, Notifiable, SoftDeletes, InteractsWithMedia;
 
-    
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -58,6 +58,7 @@ class User extends Authenticatable implements HasMedia
         'password',
         'contact',
         'status_id',
+        'device_token',
     ];
 
     /**
@@ -121,7 +122,7 @@ class User extends Authenticatable implements HasMedia
             ->get();
     }
 
-    public function assingedProjects() 
+    public function assingedProjects()
     {
         return $this->morphedByMany(Project::class, 'projectable', 'project_assignees')
                     ->withPivot('assigned_by');

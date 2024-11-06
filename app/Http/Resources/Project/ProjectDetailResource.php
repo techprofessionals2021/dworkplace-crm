@@ -108,7 +108,7 @@ class ProjectDetailResource extends JsonResource
     {
         return $this->projectThreads->map(fn($thread) => [
             'user_id' => $thread->user_id,
-            // 'user_name' => $thread->user->name,
+            'user_name' => $thread->user->name,
             'message' => $thread->message,
             'created_at'=> $thread->created_at
         ])->toArray();

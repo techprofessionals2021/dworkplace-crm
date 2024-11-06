@@ -86,7 +86,19 @@ class UserService
             $user->password = Hash::make($password);
         }
 
+        $user->save();
+
+        return $user;
         // Save the updated user profile
+    }
+    public function storeDeviceToken($token, $id)
+    {
+        $user = User::find($id);
+        if(!$user){
+            return null;
+        }
+
+        $user->device_token = $token['device_token'];
         $user->save();
 
         return $user;

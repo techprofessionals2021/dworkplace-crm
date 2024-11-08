@@ -22,6 +22,7 @@ class ProjectDetailResource extends JsonResource
             'project_transactions' => $this->getTransactions(),
             'project_attachments' => $this->getAttachments(),
             'project_threads' => $this->getThreads(),
+            'project_work_types'=>$this->getWorkTypes(),
         ];
     }
 
@@ -133,6 +134,28 @@ private function getDepartment() {
             'department_name' => $proj->name
         ];
     });
+}
+
+private function getWorkTypes() {
+    $workTypes = $this->worktypes->map(function($data) {
+        $workTypeName = $data->worktype ? $data->worktype->name : null;
+        $optionName = $data->option ? $data->option->option_value : null;
+        $departmentId = $data->worktype && $data->worktype->department ? $data->worktype->department->id : null;
+        $departmentName = $data->worktype && $data->worktype->department ? $data->worktype->department->name : null;
+
+
+        return [
+            'work_type_id' => $data->work_type_id,
+            'work_type_name' => $workTypeName,
+            'option_id' => $data->option_id,
+            'option_name' => $optionName,
+            'department_id' => $departmentId,
+            'department_name' => $departmentName,
+        ];
+    });
+
+
+    return $workTypes->groupBy('department_id');
 }
 
 

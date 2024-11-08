@@ -107,7 +107,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('project/work-types',[ProjectController::class,'getProjectWorkTypes']);
     Route::get('get-sales-persons',[ProjectController::class,'getSalesPersons']);
     Route::post('project/{id}/upload-attachments',[ProjectController::class,'uploadAttachments']);
-    Route::get('project-detail/{id}',[ProjectController::class,'getProjectDetail']);
+  
     Route::post('create-thread', [ProjectController::class, 'createThread']);
     Route::put('projects/update-status/{id}', [ProjectController::class, 'updateStatus']);
     Route::post('project/{id}/update-attachments',[ProjectController::class,'updateAttachment']);

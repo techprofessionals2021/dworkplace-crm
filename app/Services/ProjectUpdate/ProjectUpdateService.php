@@ -4,6 +4,7 @@ namespace App\Services\ProjectUpdate;
 
 use App\Models\ProjectUpdate\ProjectUpdate;
 use App\Models\Project\Project;
+use App\Helpers\Traits\UserHelper;
 use App\Services\Project\ProjectService;
 
 class ProjectUpdateService
@@ -17,7 +18,9 @@ class ProjectUpdateService
     public function createProjectUpdate($data)
     {
         $data = $this->setProjectableType($data);
-        return ProjectUpdate::create($data);
+        $projectUpdate = ProjectUpdate::create($data);
+        $this->notifyAssignees($projectUpdate->projectable->assignees);
+        return $projectUpdate;
     }
 
     public function updateProjectUpdate($data, $id){
@@ -51,5 +54,13 @@ class ProjectUpdateService
 
         }
         return $data;
+    }
+
+    public function notifyAssignees($assignees){
+        $title = "Project Update Created";
+        $message = "A new update in a Project Assigned to You";
+        foreach ($assignees as $assignee){
+            UserHelper::sendPushNotification($assignee->id, $title, $message);
+        }
     }
 }

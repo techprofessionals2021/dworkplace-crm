@@ -17,7 +17,8 @@ use App\Services\ProjectThread\ProjectThreadService;
 use App\Events\ProjectThreadCreated;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
+use Illuminate\Support\Facades\Auth;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ProjectController extends Controller
 {
@@ -173,7 +174,35 @@ class ProjectController extends Controller
     {
         $threadData = $request->validated();
         $thread = $this->projectThreadService->createThreadMessage($threadData);
-        broadcast(new ProjectThreadCreated($thread))->toOthers();
+
+        // Array to store attachment details
+        $attachmentsData = [];
+
+        // Check if there are attachments to be added
+        if ($request->has('hasAttachment') && $request->hasAttachment) {
+            $user = Auth::user();
+
+            $attachmentsData = [];
+            // Get all media items from the temp collection
+            $attachments = $user->getMedia("temp-image-{$user->id}");
+
+            // Attach each media to the thread and move to a new collection
+            foreach ($attachments as $attachment) {
+                $movedAttachment = $attachment->move($thread, 'thread-attachments');
+                
+                // Add URL and type to the attachments data array
+                $attachmentsData[] = [
+                    'url' => $movedAttachment->getUrl(),
+                    'type' => $movedAttachment->mime_type,
+                ];
+                
+                // Delete the attachment from the temporary collection after moving it
+                $attachment->delete();
+            }
+            
+        }
+
+        broadcast(new ProjectThreadCreated($thread,$attachmentsData));
 
         return ResponseHelper::success($thread, "Project Thread Created successfully", Response::HTTP_OK);
     }
@@ -209,6 +238,59 @@ class ProjectController extends Controller
         }
 
         return ResponseHelper::error('Project not found', 404);
+    }
+
+    public function uploadTempAttachment(Request $request)
+    {
+        // Validate the incoming file
+        $request->validate([
+            'file' => 'required|file|max:10240',
+        ]);
+
+        // Upload the attachment using ProjectThreadService
+        $media = $this->projectThreadService->uploadAttachment($request->file('file'));
+
+        // Prepare the response data
+        $data = [
+            'id' => $media->id,
+        ];
+
+        // Return success response with ResponseHelper
+        return ResponseHelper::success($data, "Attachment Upload successfully", Response::HTTP_OK);
+    }
+
+
+    public function deleteTempAttachment($mediaId)
+    {
+        // Retrieve the authenticated user
+        $user = Auth::user();
+
+        // Find the media item by ID and ensure it belongs to the user
+        $mediaItem = Media::where('id', $mediaId)
+            ->where('model_type', get_class($user))
+            ->where('model_id', $user->id)
+            ->first();
+
+        // Check if the media item exists and belongs to the authenticated user
+        if (!$mediaItem) {
+            return ResponseHelper::error('Attachment not found or not authorized to delete', Response::HTTP_NOT_FOUND);
+        }
+
+        // Delete the media item (removes both file and database record)
+        $mediaItem->delete();
+
+        // Return a success response
+        return ResponseHelper::success(null, "Attachment deleted successfully", Response::HTTP_OK);
+    }
+
+    public function getUserTempAttachments()
+    {
+        $user = Auth::user();
+
+        // Use the service to get user attachments
+        $attachments = $this->projectThreadService->getUserAttachments($user);
+
+        return ResponseHelper::success($attachments, 'User attachments retrieved successfully.', Response::HTTP_OK);
     }
 
 }

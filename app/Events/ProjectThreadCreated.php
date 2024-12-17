@@ -16,17 +16,19 @@ class ProjectThreadCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $projectThread;
+    public $attachments;
     public $type;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(ProjectThread $projectThread)
+    public function __construct(ProjectThread $projectThread,  array $attachments = [])
     {
         $this->projectThread = $projectThread;
         if ($projectThread->threadable_type == Project::class) {
             $this->type = 'project';
         }
+        $this->attachments = $attachments;
 
     }
 
@@ -56,6 +58,7 @@ class ProjectThreadCreated implements ShouldBroadcast
             'threadable_type' => $this->projectThread->threadable_type,
             'threadable_id' => $this->projectThread->threadable_id,
             'created_at' => $this->projectThread->created_at->toDateTimeString(),
-        ];
+            'attachments' => $this->attachments,
+        ];  
     }
 }

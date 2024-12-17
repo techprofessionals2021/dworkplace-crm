@@ -112,6 +112,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('projects/update-status/{id}', [ProjectController::class, 'updateStatus']);
     Route::post('project/{id}/update-attachments',[ProjectController::class,'updateAttachment']);
 
+    Route::post('/upload-temp-attachment', [ProjectController::class, 'uploadTempAttachment']);
+    Route::delete('/delete-temp-attachment/{mediaId}', [ProjectController::class, 'deleteTempAttachment']);
+    Route::get('/user-temp-attachments', [ProjectController::class, 'getUserTempAttachments']);
+
 
     Route::apiResource('project-transaction',ProjectTransactionController::class);
     Route::apiResource('project-assignee',ProjectAssigneeController::class);

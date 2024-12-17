@@ -42,6 +42,7 @@ class User extends Authenticatable implements HasMedia
     {
         $this->addMediaCollection('profile_images')
              ->singleFile(); // Ensures only one image in the collection
+        $this->addMediaCollection("temp-image-{$this->id}");     
     }
 
 

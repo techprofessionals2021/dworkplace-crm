@@ -107,9 +107,16 @@ class ProjectDetailResource extends JsonResource
     private function getThreads(): array
     {
         return $this->projectThreads->map(fn($thread) => [
+            'chat_id' => $thread->id,
             'user_id' => $thread->user_id,
             'user_name' => $thread->user->name,
             'message' => $thread->message,
+            'attachments' => $thread->getMedia('thread-attachments')->isNotEmpty() // Check if the thread has attachments
+            ? $thread->getMedia('thread-attachments')->map(fn($media) => [
+                'url' => $media->getUrl(),
+                'type' => $media->mime_type,
+            ])->toArray()
+            : [], // Return an empty array if no attachments
             'created_at'=> $thread->created_at
         ])->toArray();
     }

@@ -6,6 +6,7 @@ use App\Models\Project\Project;
 use App\Models\Project\ProjectWorkType;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\ProjectUpdatedNotification;
+use App\Helpers\Traits\UserHelper;
 use App\Models\Project\ProjectWorkTypeValue;
 
 class ProjectRepository
@@ -58,10 +59,10 @@ class ProjectRepository
         foreach ($departManagers as $userId) {
             $assigneesWithPivotData[$userId] = ['assigned_by' => auth()->id()];
         }
-    
+
         // Attach with pivot data
         $this->project->assignees()->attach($assigneesWithPivotData);
-    
+
         // dd($pivotRecords = $this->project->departments->map(function ($department) {
         //     return [
         //         'department_id' => $department->id,
@@ -107,6 +108,27 @@ class ProjectRepository
         // Access the already-loaded departments using $this->project
         $department = $this->project->departments->firstWhere('id', $departmentId);
         return $department ? $department->pivot->id : null; // Get the pivot ID (departmentable_id)
+    }
+
+    public function notifyManagers(){
+        $departments = $this->project->departments;
+        $title = "Project Created";
+        $message = "A project related to your department has been created.";
+        foreach ($departments as $department){
+            UserHelper::sendPushNotification($department->manager_id, $title, $message);
+        }
+        return $this;
+    }
+
+    public function notifyAssignees(){
+        $assignees = $this->project->assignees;
+        $title = "Project Updated";
+        $message = "A Project assigned to you has been updated.";
+        foreach($assignees as $assignee){
+            UserHelper::sendPushNotification($assignee->id,$title,$message);
+        }
+
+        return $this;
     }
 
     public function loadRelations(): Project

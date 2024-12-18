@@ -115,6 +115,7 @@ class ProjectDetailResource extends JsonResource
             ? $thread->getMedia('thread-attachments')->map(fn($media) => [
                 'url' => $media->getUrl(),
                 'type' => $media->mime_type,
+                'name' => $media->file_name,
             ])->toArray()
             : [], // Return an empty array if no attachments
             'created_at'=> $thread->created_at

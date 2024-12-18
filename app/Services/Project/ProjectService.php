@@ -32,9 +32,8 @@ class ProjectService
                 ->addFinancialDetails($data['financial'])
                 ->addDepartments($data['other']['departments'])
                 ->addSalespersons($data['other']['salespersons'])
-                ->addWorkTypes($data['work_types']);
-
-
+                ->addWorkTypes($data['work_types'])
+                ->notifyManagers();
 
             return $project;
         });
@@ -83,7 +82,7 @@ class ProjectService
     public function getAssignedProjects(){
 
         $user=Auth::user();
-        $assigned_project=Project::wherehas('projectAssignee',fn($q)=> $q->where('user_id',$user->id))->get();
+        $assigned_project=Project::wherehas('assignees',fn($q)=> $q->where('user_id',$user->id))->get();
         return $assigned_project;
 
     }
@@ -127,7 +126,7 @@ class ProjectService
                     ->updateDepartments($projectData['other']['departments']) // Update departments
                     ->updateSalespersons($projectData['other']['salespersons']) // Update salespersons
                     ->updateWorkTypes($projectData['work_types'])
-                    ->sendProjectUpdateNotification(); // Update work types
+                    ->notifyAssignees();
 
                 // $assignees = $project->assignees->pluck('id');
                 // Notification::send($assignees, new ProjectUpdatedNotification($project));

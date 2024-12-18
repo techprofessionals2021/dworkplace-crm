@@ -56,7 +56,8 @@ class ProjectController extends Controller
 
             if($this->hasPermission('view_assigned_projects')){
             $assignedProjects=$this->projectService->getAssignedProjects();
-            return ResponseHelper::success($all_projects, 'Assigned Projects fetched successfully!',Response::HTTP_CREATED);
+            $projectResouce = ProjectResource::collection($assignedProjects);
+            return ResponseHelper::success($projectResouce, 'Assigned Projects fetched successfully!',Response::HTTP_CREATED);
             }
          }
      }

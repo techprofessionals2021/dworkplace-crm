@@ -82,7 +82,7 @@ class ProjectService
     public function getAssignedProjects(){
 
         $user=Auth::user();
-        $assigned_project=Project::wherehas('projectAssignee',fn($q)=> $q->where('user_id',$user->id))->get();
+        $assigned_project=Project::wherehas('assignees',fn($q)=> $q->where('user_id',$user->id))->get();
         return $assigned_project;
 
     }

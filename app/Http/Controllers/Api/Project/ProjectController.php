@@ -194,6 +194,7 @@ class ProjectController extends Controller
                 $attachmentsData[] = [
                     'url' => $movedAttachment->getUrl(),
                     'type' => $movedAttachment->mime_type,
+                    'name' => !empty($movedAttachment->name) ? $movedAttachment->name : 'Unnamed',
                 ];
                 
                 // Delete the attachment from the temporary collection after moving it

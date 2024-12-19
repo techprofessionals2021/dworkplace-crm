@@ -46,9 +46,9 @@ class ProjectAssigneeService
         // }
 
 
-        return ProjectAssignee::where('projectable_id', $projectId)
-            ->where('projectable_type', $projectType)
-            ->get();
+        // return ProjectAssignee::where('projectable_id', $projectId)
+        //     ->where('projectable_type', $projectType)
+        //     ->get();
     }
 
 

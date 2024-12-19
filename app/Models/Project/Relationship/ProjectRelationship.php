@@ -7,7 +7,7 @@ use App\Models\Project\ProjectDetails;
 use App\Models\Project\ProjectThread;
 use App\Models\Project\ProjectWorkType;
 use App\Models\ProjectUpdate\ProjectUpdate;
-use App\Models\ProjectAssignee\ProjectAssignee;
+// use App\Models\ProjectAssignee\ProjectAssignee;
 use App\Models\Project\ProjectWorkTypeValue;
 use App\Models\User;
 use App\Models\SourceAccount\SourceAccount;

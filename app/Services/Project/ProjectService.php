@@ -55,7 +55,7 @@ class ProjectService
     {
 
         $users = User::whereHas('departments', function ($q) {
-            $q->where('slug', 'sales-department');
+            $q->where('slug', 'sales');
         })->get();
 
         return $users;

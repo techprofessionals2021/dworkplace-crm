@@ -35,7 +35,7 @@ class CustomResetPasswordNotification extends ResetPasswordNotification
     public function toMail($notifiable)
     {
         // Here, you can customize the URL for the password reset link
-        $url = url(env('FRONTEND_URL') . "/reset-password?token={$this->token}&email={$notifiable->email}");
+        $url = url(env('FRONTEND_RESET_URL') . "?token={$this->token}&email={$notifiable->email}");
 
         return (new MailMessage)
             ->subject('Reset Password Notification')

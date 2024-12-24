@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 
 use App\Helpers\Traits\UserHelper;
 use App\Models\User;
+use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
@@ -64,10 +65,19 @@ class AuthService
 
      }
 
-    public function sendResetLink(array $credentials)
-    {
-        return Password::sendResetLink($credentials);
-    }
+     public function sendResetLink(array $credentials)
+     {
+         // Validate user email
+         $user = User::where('email', $credentials['email'])->firstOrFail();
+     
+         // Generate reset token
+         $token = Password::createToken($user);
+     
+         // Send the custom reset email
+         $user->notify(new CustomResetPasswordNotification($token));
+     
+         return Password::RESET_LINK_SENT;
+     }
 
 
     public function resetPassword($data)

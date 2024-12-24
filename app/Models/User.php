@@ -34,7 +34,7 @@ class User extends Authenticatable implements HasMedia
             ->logOnly(['name', 'email', 'role'])
             ->logOnlyDirty()
             ->useLogName('user')
-            ->setDescriptionForEvent(fn(string $eventName) => "User {$eventName} by " . auth()->user()->name);
+            ->setDescriptionForEvent(fn(string $eventName) => "User {$eventName} by " . @auth()->user()->name);
     }
 
     

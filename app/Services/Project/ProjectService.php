@@ -33,7 +33,8 @@ class ProjectService
                 ->addDepartments($data['other']['departments'])
                 ->addSalespersons($data['other']['salespersons'])
                 ->addWorkTypes($data['work_types'])
-                ->notifyManagers();
+                ->notifyAssignees('New Project Created', 'A new project has been assigned to you.')
+                ->notifyManagers('New Project Created', 'A new project has created in your department.');
 
             return $project;
         });
@@ -117,7 +118,7 @@ class ProjectService
     public function updateProject($projectData, $id)
     {
         $project = $this->projectRepository->find($id);
-        if(!$project){
+        if (!$project) {
             return null;
         } else {
             return DB::transaction(function () use ($projectData, $id, $project) {
@@ -126,7 +127,8 @@ class ProjectService
                     ->updateDepartments($projectData['other']['departments']) // Update departments
                     ->updateSalespersons($projectData['other']['salespersons']) // Update salespersons
                     ->updateWorkTypes($projectData['work_types'])
-                    ->notifyAssignees();
+                    ->notifyAssignees('Project Updated', 'A project that you are assigned to has been updated.')
+                    ->notifyManagers('Project Updated', 'A project in your department has been updated.');
 
                 // $assignees = $project->assignees->pluck('id');
                 // Notification::send($assignees, new ProjectUpdatedNotification($project));

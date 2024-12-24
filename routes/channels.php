@@ -21,3 +21,7 @@ Broadcast::channel('thread', function ($user) {
 
     return true;
 });
+
+Broadcast::channel('projects', function () {
+    return true;
+});

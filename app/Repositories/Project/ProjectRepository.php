@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Project;
 
+use App\Events\NotifyUserAboutProject;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectWorkType;
 use Illuminate\Support\Facades\Notification;
@@ -110,26 +111,30 @@ class ProjectRepository
         return $department ? $department->pivot->id : null; // Get the pivot ID (departmentable_id)
     }
 
-    public function notifyManagers(){
+    public function notifyManagers($title, $message)
+    {
         $departments = $this->project->departments;
-        $title = "Project Created";
-        $message = "A project related to your department has been created.";
-        foreach ($departments as $department){
+        foreach ($departments as $department) {
             UserHelper::sendPushNotification($department->manager_id, $title, $message);
+
+            // Notify manager with userType as 'manager'
+            broadcast(new NotifyUserAboutProject($this->project, $message, $department->manager_id, 'manager'));
         }
         return $this;
     }
 
-    public function notifyAssignees(){
+    public function notifyAssignees($title, $message)
+    {
         $assignees = $this->project->assignees;
-        $title = "Project Updated";
-        $message = "A Project assigned to you has been updated.";
-        foreach($assignees as $assignee){
-            UserHelper::sendPushNotification($assignee->id,$title,$message);
-        }
+        foreach ($assignees as $assignee) {
+            UserHelper::sendPushNotification($assignee->id, $title, $message);
 
+            // Notify assignee with userType as 'assignee'
+            broadcast(new NotifyUserAboutProject($this->project, $message, $assignee->id, 'assignee'));
+        }
         return $this;
     }
+
 
     public function loadRelations(): Project
     {
@@ -211,7 +216,7 @@ class ProjectRepository
         return $this;
     }
 
-    public function sendProjectUpdateNotification() : self
+    public function sendProjectUpdateNotification(): self
     {
         $assignees = $this->project->assignees->pluck('id');
         Notification::send($assignees, new ProjectUpdatedNotification($this->project));
